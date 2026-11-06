@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kvevri — Wine Bar, Tbilisi</title>
+<meta name="description" content="Kvevri is a natural wine bar and kitchen in Sololaki, Tbilisi. Georgian wine made in buried clay jars, small plates, and a table for you.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:ital,wght@0,400..800;1,400..600&family=Noto+Serif+Georgian:wght@500..900&display=swap">
+<style>
+/* =========================================================
+   KVEVRI — restaurant & wine bar template
+   Concept: the colour of saperavi in a glass, amber wine as
+   the light. The hero is the Georgian word for the clay jar,
+   filling with amber once on load. The rest reads like a
+   printed wine list: dotted leaders, prices in lari.
+   ========================================================= */
+:root{
+  --saperavi:#2B0F20;   /* page */
+  --saperavi-2:#3A1529; /* raised surfaces */
+  --chalk:#F3ECE2;      /* text */
+  --chalk-2:#C7B4B9;    /* secondary text */
+  --amber:#F0A531;      /* the light */
+  --vine:#A3B061;       /* small accents: open-now dot */
+  --line:rgba(243,236,226,.18);
+  --display:"Gloock", Georgia, "Times New Roman", serif;
+  --body:"Figtree", "Helvetica Neue", Arial, sans-serif;
+  --geo:"Noto Serif Georgian", "Sylfaen", Georgia, serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+/* This template is deliberately one look (a dark cellar). Colours are all tokens above. */
+
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;background:var(--saperavi);color:var(--chalk);font-family:var(--body);font-size:clamp(1rem,.96rem + .2vw,1.1rem);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1320px;margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;letter-spacing:-.01em;text-wrap:balance}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem var(--body);text-decoration:none;border-radius:999px;padding:.85em 1.4em;border:0;cursor:pointer;background:var(--amber);color:var(--saperavi)}
+.btn:hover{filter:brightness(1.08)}
+.btn.line{background:transparent;color:var(--chalk);box-shadow:inset 0 0 0 1.5px var(--chalk)}
+
+/* ---------- header ---------- */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:20px}
+.brand{font-family:var(--display);font-size:1.6rem;text-decoration:none;line-height:1}
+.top nav{display:flex;gap:clamp(14px,2.6vw,32px);align-items:center;font-weight:600;font-size:.95rem}
+.top nav a:not(.btn){text-decoration:none;color:var(--chalk-2)}
+.top nav a:not(.btn):hover{color:var(--chalk)}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(16px,4vw,40px) clamp(40px,7vw,90px)}
+.geo{font-family:var(--geo);font-weight:800;font-size:clamp(4.4rem,19vw,17rem);line-height:1.05;margin:0;letter-spacing:-.01em;
+  background:linear-gradient(to top,var(--amber) 0 var(--fill,100%),color-mix(in srgb,var(--chalk) 14%,transparent) var(--fill,100%) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+@property --fill{syntax:"<percentage>";inherits:true;initial-value:100%}
+.geo.pour{animation:pour 2.6s .4s cubic-bezier(.45,.05,.3,1) both}
+@keyframes pour{from{--fill:0%}to{--fill:100%}}
+.hero .row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,4vw,60px);align-items:end;margin-top:clamp(10px,2vw,24px)}
+.hero h1{font-size:clamp(2rem,1.3rem + 2.8vw,3.8rem)}
+.hero .side{display:grid;gap:18px;justify-items:start}
+.hero .side p{margin:0;color:var(--chalk-2);max-width:40ch}
+.open{display:inline-flex;align-items:center;gap:10px;font-weight:600}
+.open i{width:9px;height:9px;border-radius:50%;background:var(--vine);box-shadow:0 0 0 4px color-mix(in srgb,var(--vine) 25%,transparent)}
+.open.closed i{background:var(--chalk-2);box-shadow:none}
+
+/* ---------- section heads ---------- */
+.sec{padding-block:clamp(48px,8vw,110px);border-top:1px solid var(--line)}
+.sec-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 32px;margin-bottom:clamp(24px,4vw,44px)}
+.sec-h h2{font-size:clamp(2.2rem,1.4rem + 3vw,4.2rem)}
+.sec-h p{margin:0;color:var(--chalk-2);max-width:42ch}
+
+/* ---------- wine list ---------- */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{all:unset;cursor:pointer;padding:.45em 1em;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--line);font-weight:600;font-size:.92rem}
+.chips button[aria-pressed="true"]{background:var(--chalk);color:var(--saperavi);box-shadow:none}
+.chips button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.list{columns:2 360px;column-gap:clamp(28px,5vw,80px)}
+.wine{break-inside:avoid;padding-block:14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 14px;align-items:baseline}
+.wine .dot{width:12px;height:12px;border-radius:50%;transform:translateY(1px)}
+.wine .dot.amber{background:var(--amber)} .wine .dot.red{background:#8E1B3A;box-shadow:inset 0 0 0 1.5px #C9416A} .wine .dot.white{background:#E9DFA6}
+.wine .dot.pet{background:repeating-radial-gradient(circle,#F3ECE2 0 1px,#E9DFA6 1px 3px)}
+.wine h3{font-size:1.35rem;line-height:1.15;display:flex;gap:10px;align-items:baseline}
+.wine h3::after{content:"";flex:1;border-bottom:1.5px dotted color-mix(in srgb,var(--chalk) 35%,transparent);transform:translateY(-4px)}
+.wine .price{font-family:var(--display);font-size:1.3rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wine .price small{font-family:var(--body);font-size:.75rem;color:var(--chalk-2)}
+.wine p{grid-column:2 / -1;margin:0;color:var(--chalk-2);font-size:.95rem}
+.wine[hidden]{display:none}
+.gel{font-family:var(--geo);font-weight:500}
+.note{margin-top:22px;color:var(--chalk-2);font-size:.92rem}
+
+/* ---------- kitchen ---------- */
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,36px)}
+.plate{display:grid;gap:6px;align-content:start;padding-top:14px;border-top:2px solid var(--amber)}
+.plate h3{font-size:1.5rem}
+.plate p{margin:0;color:var(--chalk-2)}
+.plate .price{font-family:var(--display);font-size:1.2rem}
+
+/* ---------- the year of a kvevri (a real sequence, by month) ---------- */
+.year{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-left:1px solid var(--line)}
+.year li{padding:0 clamp(14px,2vw,26px) 8px;border-right:1px solid var(--line);display:grid;gap:10px;align-content:start}
+.year .mo{font-family:var(--display);font-size:clamp(2rem,1.5rem + 1.6vw,3rem);color:var(--amber);line-height:1}
+.year h3{font-family:var(--body);font-weight:700;font-size:1.05rem}
+.year p{margin:0;color:var(--chalk-2);font-size:.95rem}
+
+/* ---------- nights ---------- */
+.nights{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px)}
+.night{background:var(--saperavi-2);border-radius:4px;padding:clamp(20px,3vw,32px);display:grid;gap:8px}
+.night .when{font-weight:700;color:var(--amber)}
+.night h3{font-size:clamp(1.6rem,1.2rem + 1.2vw,2.3rem)}
+.night p{margin:0;color:var(--chalk-2)}
+
+/* ---------- booking ---------- */
+.book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,5vw,72px);align-items:start}
+.book h2{font-size:clamp(2.4rem,1.5rem + 3.4vw,4.8rem)}
+.book .info{display:grid;gap:22px;margin-top:24px;color:var(--chalk-2)}
+.book .info b{display:block;color:var(--chalk);font-weight:700}
+.hours{display:grid;grid-template-columns:auto auto;gap:2px 22px;width:max-content;font-variant-numeric:tabular-nums}
+.hours .today{color:var(--amber);font-weight:700}
+form{background:var(--chalk);color:var(--saperavi);border-radius:4px;padding:clamp(20px,3.5vw,40px);display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form label{display:grid;gap:6px;font-weight:700;font-size:.9rem}
+form .full{grid-column:1 / -1}
+input,select,textarea{font:inherit;font-weight:400;color:var(--saperavi);background:#fff;border:1.5px solid #D9CCC6;border-radius:4px;padding:.7em .8em;width:100%}
+.guests{display:flex;align-items:center;gap:0;border:1.5px solid #D9CCC6;border-radius:4px;background:#fff;width:max-content}
+.guests button{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;font-size:1.3rem}
+.guests button:focus-visible{outline:2px solid var(--saperavi)}
+.guests output{min-width:2.5ch;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+form .submit{grid-column:1 / -1;justify-self:start;background:var(--saperavi);color:var(--chalk)}
+.done{grid-column:1 / -1;margin:0;font-family:var(--display);font-size:1.6rem;line-height:1.2}
+footer{border-top:1px solid var(--line);padding-block:24px 36px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:var(--chalk-2);font-size:.92rem}
+footer a{text-decoration:none}
+
+@media (max-width: 900px){
+  .hero .row,.book,.nights{grid-template-columns:1fr}
+  .plates{grid-template-columns:1fr 1fr}
+  .year{grid-template-columns:1fr 1fr;row-gap:28px}
+  .top nav a:not(.btn){display:none}
+}
+@media (max-width: 560px){
+  .plates,.year{grid-template-columns:1fr}
+  form{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){ .geo.pour{animation:none} }
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="brand" href="#">Kvevri</a>
+  <nav aria-label="Main"><a href="#wine">Wine</a><a href="#kitchen">Kitchen</a><a href="#nights">Nights</a><a class="btn" href="#book">Book a table</a></nav>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <p class="geo pour" lang="ka" aria-label="Kvevri, in Georgian">ქვევრი</p>
+    <div class="row">
+      <h1>Wine from clay jars buried in the ground, and the food that goes with it.</h1>
+      <div class="side">
+        <span class="open" id="open"><i></i><span id="open-t">Open today until 01:00</span></span>
+        <p>Forty Georgian natural wines, eight by the glass. Small plates from our clay oven. Sololaki, Tbilisi.</p>
+        <a class="btn" href="#book">Book a table</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec" id="wine" aria-labelledby="wine-h">
+    <div class="sec-h">
+      <h2 id="wine-h">By the glass</h2>
+      <div class="chips" role="group" aria-label="Filter wines by colour">
+        <button type="button" data-c="all" aria-pressed="true">All</button>
+        <button type="button" data-c="amber" aria-pressed="false">Amber</button>
+        <button type="button" data-c="red" aria-pressed="false">Red</button>
+        <button type="button" data-c="white" aria-pressed="false">White &amp; pét-nat</button>
+      </div>
+    </div>
+    <div class="list" id="list">
+      <div class="wine" data-c="amber"><span class="dot amber"></span><h3>Rkatsiteli</h3><span class="price">18 <small class="gel">₾</small></span><p>Kakheti, 6 months on skins. Dried apricot, black tea.</p></div>
+      <div class="wine" data-c="amber"><span class="dot amber"></span><h3>Kisi</h3><span class="price">22 <small class="gel">₾</small></span><p>Kakheti. Quince, walnut, a dry grip at the end.</p></div>
+      <div class="wine" data-c="amber"><span class="dot amber"></span><h3>Tsolikouri</h3><span class="price">20 <small class="gel">₾</small></span><p>Imereti, short skin contact. Pear and salt.</p></div>
+      <div class="wine" data-c="red"><span class="dot red"></span><h3>Saperavi</h3><span class="price">19 <small class="gel">₾</small></span><p>Kakheti. Dark cherry and plum, soft tannin.</p></div>
+      <div class="wine" data-c="red"><span class="dot red"></span><h3>Otskhanuri Sapere</h3><span class="price">26 <small class="gel">₾</small></span><p>Imereti. Sour cherry, high acid, built for food.</p></div>
+      <div class="wine" data-c="red"><span class="dot red"></span><h3>Tavkveri</h3><span class="price">17 <small class="gel">₾</small></span><p>Kartli. Light, chilled, raspberry.</p></div>
+      <div class="wine" data-c="white"><span class="dot white"></span><h3>Chinuri</h3><span class="price">16 <small class="gel">₾</small></span><p>Kartli, no skins. Green apple and chalk.</p></div>
+      <div class="wine" data-c="white"><span class="dot pet"></span><h3>Pét-nat Goruli Mtsvane</h3><span class="price">21 <small class="gel">₾</small></span><p>Kartli. Gently sparkling, cloudy, lemon peel.</p></div>
+    </div>
+    <p class="note">All wines by the glass are 125 ml. The full list of 40 bottles is on the table.</p>
+  </section>
+
+  <section class="wrap sec" id="kitchen" aria-labelledby="k-h">
+    <div class="sec-h"><h2 id="k-h">From the clay oven</h2><p>Plates to share. The menu changes with the market on Dezerter bazaar.</p></div>
+    <div class="plates">
+      <div class="plate"><h3>Mchadi &amp; cheese</h3><p>Corn bread, young sulguni, green adjika.</p><span class="price">14 <span class="gel">₾</span></span></div>
+      <div class="plate"><h3>Pkhali trio</h3><p>Spinach, beetroot and leek with walnut.</p><span class="price">16 <span class="gel">₾</span></span></div>
+      <div class="plate"><h3>Mushrooms in ketsi</h3><p>Oyster mushrooms baked with sulguni in a clay dish.</p><span class="price">19 <span class="gel">₾</span></span></div>
+      <div class="plate"><h3>Trout, tarragon</h3><p>Whole Borjomi trout, tarragon butter, pomegranate.</p><span class="price">34 <span class="gel">₾</span></span></div>
+      <div class="plate"><h3>Chakapuli</h3><p>Lamb stewed in white wine with tarragon and plums.</p><span class="price">32 <span class="gel">₾</span></span></div>
+      <div class="plate"><h3>Churchkhela</h3><p>Walnuts dipped in thickened grape juice, made here.</p><span class="price">9 <span class="gel">₾</span></span></div>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="y-h">
+    <div class="sec-h"><h2 id="y-h">A year inside a kvevri</h2><p>How the amber wine in your glass was made. Nothing is added except time.</p></div>
+    <ol class="year">
+      <li><span class="mo">Sep</span><h3>Rtveli, the harvest</h3><p>Grapes are picked by hand and pressed with their skins, stems and seeds.</p></li>
+      <li><span class="mo">Oct</span><h3>Into the jar</h3><p>Everything goes into a clay kvevri buried up to its neck in the cellar floor.</p></li>
+      <li><span class="mo">Nov</span><h3>Sealed underground</h3><p>The jar is closed with a stone lid and clay. The earth keeps it at 14 °C.</p></li>
+      <li><span class="mo">Apr</span><h3>Opened in spring</h3><p>The wine is drawn off the skins, now amber, dry and ready to pour.</p></li>
+    </ol>
+  </section>
+
+  <section class="wrap sec" id="nights" aria-labelledby="n-h">
+    <div class="sec-h"><h2 id="n-h">Nights at Kvevri</h2></div>
+    <div class="nights">
+      <div class="night"><span class="when">Every Thursday, 21:00</span><h3>Polyphonic singing</h3><p>A trio from Guria sings at the long table. Come early, it fills up.</p></div>
+      <div class="night"><span class="when">Last Sunday of the month</span><h3>Meet the winemaker</h3><p>One maker, five wines, a plate for each. 85 <span class="gel">₾</span> per person, book ahead.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap sec" id="book" aria-labelledby="b-h">
+    <div class="book">
+      <div>
+        <h2 id="b-h">Book a table</h2>
+        <div class="info">
+          <div><b>Address</b>14 Lado Asatiani St, Sololaki, Tbilisi</div>
+          <div><b>Hours</b><div class="hours" id="hours"></div></div>
+          <div><b>Phone</b>+995 32 200 00 00</div>
+        </div>
+      </div>
+      <form id="form">
+        <label>Date<input id="f-date" type="date" required></label>
+        <label>Time<select id="f-time"><option>18:00</option><option>18:30</option><option>19:00</option><option selected>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option></select></label>
+        <div class="full" style="display:grid;gap:6px"><span style="font-weight:700;font-size:.9rem" id="g-l">Guests</span>
+          <div class="guests" role="group" aria-labelledby="g-l"><button type="button" id="g-minus" aria-label="Fewer guests">−</button><output id="g-n">2</output><button type="button" id="g-plus" aria-label="More guests">+</button></div>
+        </div>
+        <label>Name<input id="f-name" autocomplete="name" required></label>
+        <label>Phone<input id="f-phone" type="tel" autocomplete="tel" required></label>
+        <label class="full">Anything we should know?<textarea id="f-note" rows="3" placeholder="A birthday, a high chair, a seat at the bar."></textarea></label>
+        <button class="btn submit" type="submit">Request the table</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>Kvevri wine bar, Tbilisi</span>
+  <span><a href="#">Instagram</a> &nbsp; <a href="#">Google Maps</a></span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+(() => {
+  /* ---- opening hours: edit HOURS, everything else updates (time zone of the bar) ---- */
+  const TZ = 'Asia/Tbilisi';
+  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const HOURS = { Mon:null, Tue:['17:00','00:00'], Wed:['17:00','00:00'], Thu:['17:00','01:00'], Fri:['17:00','02:00'], Sat:['14:00','02:00'], Sun:['14:00','23:00'] };
+  let now; try { now = new Date(new Date().toLocaleString('en-US', { timeZone: TZ })); } catch (e) { now = new Date(); }
+  const today = DAYS[(now.getDay() + 6) % 7];
+  const box = document.getElementById('hours');
+  DAYS.forEach(d => { const h = HOURS[d]; [d, h ? `${h[0]} – ${h[1]}` : 'Closed'].forEach(t => { const s = document.createElement('span'); s.textContent = t; if (d === today) s.className = 'today'; box.appendChild(s); }); });
+  const mins = t => { const [a, b] = t.split(':').map(Number); return a * 60 + b; };
+  const cur = now.getHours() * 60 + now.getMinutes();
+  const h = HOURS[today], o = document.getElementById('open'), ot = document.getElementById('open-t');
+  if (h) {
+    let s = mins(h[0]), e = mins(h[1]); if (e <= s) e += 1440;
+    if (cur >= s && cur < e) ot.textContent = `Open now, until ${h[1]}`;
+    else if (cur < s) { ot.textContent = `Opens today at ${h[0]}`; o.classList.add('closed'); }
+    else { ot.textContent = 'Closed now'; o.classList.add('closed'); }
+  } else { ot.textContent = 'Closed today, open Tuesday from 17:00'; o.classList.add('closed'); }
+
+  /* ---- wine filter ---- */
+  const chips = document.querySelectorAll('.chips button'), wines = document.querySelectorAll('.wine');
+  chips.forEach(b => b.addEventListener('click', () => {
+    chips.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    wines.forEach(w => w.hidden = !(b.dataset.c === 'all' || w.dataset.c === b.dataset.c));
+  }));
+
+  /* ---- booking form ---- */
+  const date = document.getElementById('f-date');
+  const iso = d => d.toISOString().slice(0, 10);
+  date.min = iso(now); date.value = iso(new Date(now.getTime() + 864e5));
+  let n = 2; const out = document.getElementById('g-n');
+  document.getElementById('g-minus').onclick = () => { n = Math.max(1, n - 1); out.textContent = n; };
+  document.getElementById('g-plus').onclick = () => { n = Math.min(12, n + 1); out.textContent = n; };
+  const form = document.getElementById('form');
+  form.addEventListener('submit', e => {
+    e.preventDefault(); if (!form.reportValidity()) return;
+    const when = new Date(date.value + 'T12:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+    const p = document.createElement('p'); p.className = 'done'; p.setAttribute('role', 'status');
+    p.textContent = `Thank you. We will call ${document.getElementById('f-phone').value} to confirm a table for ${n} on ${when} at ${document.getElementById('f-time').value}.`;
+    form.replaceChildren(p);
+  });
+})();
+</script>
+</body>
+</html>

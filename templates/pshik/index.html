@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en" data-flavor="tarragon">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pshik — Lemonades from the old kiosk</title>
+<meta name="description" content="Pshik brings back tarragon, pear, cherry and cream soda lemonades, made with real juice and half the sugar. Spin the can, pick a flavour, order a pack.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Golos+Text:wght@400..800&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"}}</script>
+<style>
+/* =========================================================
+   PSHIK — drinks brand template with a 3D can
+   Concept: the whole page takes the colour of the can you
+   are holding. Pick a flavour and the background, text and
+   3D model all change together. Each flavour is one block
+   of tokens below; add a fifth by copying one.
+   ========================================================= */
+:root{
+  --font-d:"Dela Gothic One", "Arial Black", Impact, sans-serif;
+  --font-b:"Golos Text", "Helvetica Neue", Arial, sans-serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  /* default flavour = tarragon */
+  --bg:#1E8442; --ink:#F3EFE6; --soft:rgba(243,239,230,.72); --chip:#F3EFE6; --chip-ink:#1E8442; --deep:#12592B;
+  --line:rgba(243,239,230,.28);
+  color-scheme:light;
+}
+html[data-flavor="tarragon"]{ --bg:#1E8442; --ink:#F3EFE6; --soft:rgba(243,239,230,.74); --chip:#F3EFE6; --chip-ink:#1E8442; --deep:#12592B; --line:rgba(243,239,230,.28) }
+html[data-flavor="pear"]    { --bg:#E2B23A; --ink:#221A0E; --soft:rgba(34,26,14,.72);  --chip:#221A0E; --chip-ink:#E2B23A; --deep:#C4921F; --line:rgba(34,26,14,.22) }
+html[data-flavor="cherry"]  { --bg:#C0192F; --ink:#F6EBE3; --soft:rgba(246,235,227,.76); --chip:#F6EBE3; --chip-ink:#C0192F; --deep:#8E0F21; --line:rgba(246,235,227,.28) }
+html[data-flavor="creamsoda"]{ --bg:#E6D2C9; --ink:#3A231E; --soft:rgba(58,35,30,.72); --chip:#3A231E; --chip-ink:#E6D2C9; --deep:#D2B8AC; --line:rgba(58,35,30,.2) }
+/* The brand is deliberately loud and single-themed: colours follow the flavour, not the OS theme. */
+
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:clamp(1rem,.96rem + .2vw,1.1rem);line-height:1.55;-webkit-font-smoothing:antialiased;
+  transition:background-color .6s ease,color .6s ease}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1400px;margin-inline:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:700 1rem var(--font-b);text-decoration:none;border:0;cursor:pointer;
+  border-radius:999px;padding:.9em 1.5em;background:var(--chip);color:var(--chip-ink);transition:background-color .6s,color .6s,transform .15s}
+.btn:active{transform:scale(.97)}
+
+/* ---------- header ---------- */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:18px}
+.logo{font-family:var(--font-d);font-size:1.7rem;letter-spacing:-.02em;text-decoration:none;line-height:1}
+.top nav{display:flex;align-items:center;gap:clamp(14px,2.6vw,30px);font-weight:600}
+.top nav a{text-decoration:none}
+.top nav a:not(.cart):hover{text-decoration:underline;text-underline-offset:4px}
+.cart{display:inline-flex;align-items:center;gap:8px;border:2px solid currentColor;border-radius:999px;padding:.4em .9em;text-decoration:none}
+.cart b{font-variant-numeric:tabular-nums}
+
+/* ---------- hero: flavour name fills the width, the can stands in front of it ---------- */
+.hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:auto auto auto;column-gap:clamp(12px,2vw,32px);row-gap:18px;padding-block:0 24px}
+.name{grid-column:1 / -1;grid-row:1;align-self:center;margin:0;min-width:0;text-align:center;font-family:var(--font-d);font-weight:400;line-height:.9;letter-spacing:-.03em;white-space:nowrap;font-size:16vw;z-index:0}
+.name span{display:inline-block;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.name.swap span{transform:translateY(25%);opacity:0}
+.stage{grid-column:2;grid-row:1;position:relative;z-index:1;aspect-ratio:3/4;height:min(70vh,640px);max-width:100%;justify-self:center;cursor:grab;touch-action:pan-y}
+.stage:active{cursor:grabbing}
+.stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.stage::before{content:"";position:absolute;left:24%;right:24%;bottom:9%;height:5%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.32),transparent)}
+.stage .fallback{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:70%;width:auto}
+.stage.ready .fallback{display:none}
+.hint{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-size:.85rem;color:var(--soft);white-space:nowrap}
+.lead{grid-column:1;grid-row:2;margin:0;font-size:clamp(1.05rem,1rem + .4vw,1.3rem);max-width:30ch}
+.act{grid-column:3;grid-row:2;display:grid;gap:16px;justify-items:start;justify-self:end}
+.facts{display:flex;gap:22px;color:var(--soft);font-size:.95rem}
+.facts b{display:block;color:var(--ink);font-family:var(--font-d);font-size:1.5rem;font-weight:400;line-height:1.1}
+.picker{grid-column:1 / -1;grid-row:3;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.picker button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:10px;padding:.55em 1.1em .55em .6em;border-radius:999px;border:2px solid var(--line);font-weight:700}
+.picker button[aria-pressed="true"]{border-color:var(--ink)}
+.picker button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.picker i{width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(0,0,0,.12)}
+
+/* ---------- flavours strip ---------- */
+.flavours{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:clamp(40px,6vw,80px)}
+.fl{all:unset;cursor:pointer;display:grid;grid-template-rows:auto 1fr auto;gap:8px;padding:clamp(16px,2vw,26px);color:#fff;min-height:420px;position:relative;overflow:hidden}
+.fl:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+.fl h3{margin:0;font-family:var(--font-d);font-weight:400;font-size:clamp(1.5rem,1.1rem + 1.2vw,2.3rem);line-height:.95;position:relative;z-index:1}
+.fl img{align-self:end;justify-self:center;width:46%;height:auto;transition:transform .5s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 18px 18px rgba(0,0,0,.25))}
+.fl:hover img{transform:translateY(-10px) rotate(-4deg)}
+.fl dl{display:grid;grid-template-columns:auto auto;gap:0 14px;margin:0;font-size:.85rem;justify-content:start;position:relative;z-index:1}
+.fl dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.fl.t{background:#1E8442}.fl.p{background:#E2B23A;color:#221A0E}.fl.c{background:#C0192F}.fl.s{background:#E6D2C9;color:#3A231E}
+
+/* ---------- story ---------- */
+.story{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);padding-block:clamp(60px,9vw,130px);align-items:start}
+.story h2{margin:0;font-family:var(--font-d);font-weight:400;font-size:clamp(2.2rem,1.3rem + 3.6vw,5rem);line-height:.95;letter-spacing:-.02em;text-wrap:balance}
+.story .txt{display:grid;gap:16px}
+.story p{margin:0;max-width:44ch}
+.story .soft{color:var(--soft)}
+
+/* ---------- order ---------- */
+.order{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);padding-block:clamp(40px,7vw,100px);border-top:2px solid var(--line);align-items:start}
+.order h2{margin:0 0 12px;font-family:var(--font-d);font-weight:400;font-size:clamp(2rem,1.3rem + 2.6vw,3.8rem);line-height:.95}
+.order .soft{color:var(--soft);max-width:38ch;margin:0}
+.box{display:grid;gap:18px}
+.packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.packs button{all:unset;cursor:pointer;border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:2px;text-align:left}
+.packs button[aria-pressed="true"]{border-color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.packs button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.packs b{font-family:var(--font-d);font-weight:400;font-size:1.6rem;line-height:1.1}
+.packs span{font-size:.88rem;color:var(--soft)}
+.sum{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:2px solid var(--line);padding-top:16px}
+.sum .p{font-family:var(--font-d);font-size:clamp(2.2rem,1.8rem + 1.8vw,3.2rem);line-height:1;font-variant-numeric:tabular-nums}
+.sum .per{color:var(--soft)}
+.added{min-height:1.5em;margin:0;font-weight:700}
+
+/* ---------- stockists + footer ---------- */
+.stock{padding-block:clamp(40px,7vw,100px);border-top:2px solid var(--line)}
+.stock h2{margin:0 0 22px;font-family:var(--font-d);font-weight:400;font-size:clamp(1.8rem,1.3rem + 1.8vw,2.8rem);line-height:1}
+.stock ul{margin:0;padding:0;list-style:none;columns:3 220px;column-gap:32px}
+.stock li{break-inside:avoid;padding-block:10px;border-bottom:1px solid var(--line)}
+.stock li b{display:block}
+.stock li span{color:var(--soft);font-size:.92rem}
+footer{background:var(--deep);transition:background-color .6s}
+footer .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;padding-block:clamp(36px,6vw,70px) 30px}
+footer .big{font-family:var(--font-d);font-size:clamp(3.4rem,1rem + 10vw,11rem);line-height:.8;letter-spacing:-.03em;grid-column:1 / -1;margin-top:20px}
+form{display:flex;gap:8px;flex-wrap:wrap}
+form input{flex:1 1 220px;font:inherit;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:999px;padding:.85em 1.2em}
+form input::placeholder{color:var(--soft)}
+.small{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.9rem;color:var(--soft);align-items:end;justify-content:flex-end}
+.small a{text-decoration:none}
+
+@media (max-width: 960px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .stage{grid-column:1;height:auto;width:min(80vw,420px)}
+  .lead{grid-column:1;grid-row:2}.act{grid-column:1;grid-row:3;justify-self:start}.picker{grid-row:4;justify-content:flex-start}
+  .flavours{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .story,.order,footer .wrap{grid-template-columns:1fr}
+  .small{justify-content:flex-start}
+  .top nav a:not(.cart){display:none}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="logo" href="#">Pshik</a>
+  <nav aria-label="Main"><a href="#flavours">Flavours</a><a href="#story">Story</a><a href="#order">Order</a>
+    <a class="cart" href="#order" aria-label="Cart"><span>Cart</span><b id="cart-n">0</b></a></nav>
+</header>
+
+<main>
+  <section class="wrap hero" aria-label="Pick a flavour">
+    <h1 class="name" id="name" aria-live="polite"><span>Tarragon</span></h1>
+    <div class="stage" id="stage" aria-label="3D can, drag to turn it" role="img">
+      <img class="fallback" id="fallback" src="img/tarragon.png" alt="">
+      <span class="hint">Drag to turn the can</span>
+    </div>
+    <p class="lead" id="pitch">Bright green and grassy, with a hint of aniseed. The one everyone remembers from the kiosk.</p>
+    <div class="act">
+      <div class="facts"><span><b id="kcal">22</b>kcal / 100 ml</span><span><b id="sugar">5.1 g</b>sugar / 100 ml</span></div>
+      <a class="btn" href="#order">Order a pack</a>
+    </div>
+    <div class="picker" role="group" aria-label="Flavour">
+      <button type="button" data-f="tarragon" aria-pressed="true"><i style="background:#1E8442"></i>Tarragon</button>
+      <button type="button" data-f="pear" aria-pressed="false"><i style="background:#E2B23A"></i>Pear</button>
+      <button type="button" data-f="cherry" aria-pressed="false"><i style="background:#C0192F"></i>Cherry</button>
+      <button type="button" data-f="creamsoda" aria-pressed="false"><i style="background:#E6D2C9"></i>Cream soda</button>
+    </div>
+  </section>
+
+  <section id="flavours" aria-label="All flavours">
+    <div class="flavours">
+      <button class="fl t" type="button" data-f="tarragon"><h3>Tarragon</h3><img src="img/tarragon.png" alt="Green can of tarragon lemonade" loading="lazy" width="349" height="615"><dl><dt>Kcal</dt><dd>22</dd><dt>Sugar</dt><dd>5.1 g</dd></dl></button>
+      <button class="fl p" type="button" data-f="pear"><h3>Pear</h3><img src="img/pear.png" alt="Yellow can of pear lemonade" loading="lazy" width="349" height="615"><dl><dt>Kcal</dt><dd>24</dd><dt>Sugar</dt><dd>5.6 g</dd></dl></button>
+      <button class="fl c" type="button" data-f="cherry"><h3>Cherry</h3><img src="img/cherry.png" alt="Red can of cherry lemonade" loading="lazy" width="349" height="615"><dl><dt>Kcal</dt><dd>26</dd><dt>Sugar</dt><dd>6.0 g</dd></dl></button>
+      <button class="fl s" type="button" data-f="creamsoda"><h3>Cream soda</h3><img src="img/creamsoda.png" alt="Pale pink can of cream soda" loading="lazy" width="349" height="615"><dl><dt>Kcal</dt><dd>25</dd><dt>Sugar</dt><dd>5.8 g</dd></dl></button>
+    </div>
+  </section>
+
+  <section class="wrap story" id="story" aria-labelledby="st-h">
+    <h2 id="st-h">The lemonades from the old kiosk, without the syrup.</h2>
+    <div class="txt">
+      <p>Tarragon, pear, cherry and cream soda were the four flavours sold from every street kiosk when our parents were kids.</p>
+      <p>We kept the recipes and changed what goes in them: real juice and herbs, cane sugar, and about half as much of it.</p>
+      <p class="soft">Bottled in Minsk. 355 ml cans, recycled and recyclable.</p>
+    </div>
+  </section>
+
+  <section class="wrap order" id="order" aria-labelledby="or-h">
+    <div>
+      <h2 id="or-h">Order a pack</h2>
+      <p class="soft">Mix any flavours. Delivery across the city the next day, free from 24 cans.</p>
+    </div>
+    <div class="box">
+      <div class="packs" role="group" aria-label="Pack size">
+        <button type="button" data-n="6" data-p="9" aria-pressed="false"><b>6</b><span>cans</span></button>
+        <button type="button" data-n="12" data-p="16" aria-pressed="true"><b>12</b><span>cans</span></button>
+        <button type="button" data-n="24" data-p="28" aria-pressed="false"><b>24</b><span>cans, free delivery</span></button>
+      </div>
+      <div class="sum"><span class="p" id="price">$16</span><span class="per" id="per">$1.33 per can</span></div>
+      <button class="btn" type="button" id="add">Add 12 cans of Tarragon</button>
+      <p class="added" id="added" role="status"></p>
+    </div>
+  </section>
+
+  <section class="wrap stock" aria-labelledby="sk-h">
+    <h2 id="sk-h">Also on the shelf at</h2>
+    <ul>
+      <li><b>Green Market</b><span>All stores in Minsk</span></li>
+      <li><b>Kofemania</b><span>Zybitskaya 9</span></li>
+      <li><b>Hlebnaya Lavka</b><span>Pobediteley 7A</span></li>
+      <li><b>Corner Deli</b><span>Kalvaryjskaja 21</span></li>
+      <li><b>Station Café</b><span>Minsk Central Station</span></li>
+      <li><b>Bar Dvor</b><span>Oktyabrskaya 16</span></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p style="margin:0 0 12px;font-weight:700">New flavour every summer. Hear about it first.</p>
+      <form id="news"><label for="n-email" style="position:absolute;left:-9999px">Email</label><input id="n-email" type="email" placeholder="Your email" autocomplete="email" required><button class="btn" type="submit">Subscribe</button></form>
+      <p class="added" id="news-ok" role="status"></p>
+    </div>
+    <div class="small"><a href="#">Instagram</a><a href="#">Wholesale</a><a href="#">hello@pshik.drinks</a><span>© 2026 Pshik</span></div>
+    <div class="big" aria-hidden="true">Pshik</div>
+  </div>
+</footer>
+
+<script>
+/* ---- flavour data: names, copy, nutrition, model file. Edit here. ---- */
+window.FLAVOURS = {
+  tarragon:  { name:'Tarragon',   pitch:'Bright green and grassy, with a hint of aniseed. The one everyone remembers from the kiosk.', kcal:22, sugar:'5.1 g', model:'models/SodaCan_Tarragon.glb', img:'img/tarragon.png' },
+  pear:      { name:'Pear',       pitch:'Ripe Duchesse pear and a little vanilla. Sweet the way candy used to be, but lighter.', kcal:24, sugar:'5.6 g', model:'models/SodaCan_Pear.glb', img:'img/pear.png' },
+  cherry:    { name:'Cherry',     pitch:'Sour cherry juice from Belarusian orchards, so it bites back a little.', kcal:26, sugar:'6.0 g', model:'models/SodaCan_Cherry.glb', img:'img/cherry.png' },
+  creamsoda: { name:'Cream soda', pitch:'Vanilla, caramel and a soft fizz. Best ice cold, better with ice cream.', kcal:25, sugar:'5.8 g', model:'models/SodaCan_CreamSoda.glb', img:'img/creamsoda.png' }
+};
+</script>
+
+<script type="module">
+const F = window.FLAVOURS;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+let current = 'tarragon', pack = { n: 12, p: 16 }, cart = 0;
+
+/* ---------------- UI ---------------- */
+const nameEl = $('name');
+function fitName() {
+  const sp = nameEl.firstElementChild; nameEl.style.fontSize = '100px';
+  const w = sp.getBoundingClientRect().width || 1;
+  nameEl.style.fontSize = Math.min(100 * nameEl.clientWidth * .98 / w, innerHeight * .42) + 'px';
+}
+addEventListener('resize', fitName); document.fonts && document.fonts.ready.then(fitName); fitName();
+function setFlavour(f, fromStrip) {
+  if (!F[f]) return; current = f;
+  document.documentElement.dataset.flavor = f;
+  document.querySelectorAll('.picker button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
+  const name = $('name');
+  name.classList.add('swap');
+  setTimeout(() => { name.firstElementChild.textContent = F[f].name; fitName(); name.classList.remove('swap'); }, reduce ? 0 : 220);
+  $('pitch').textContent = F[f].pitch; $('kcal').textContent = F[f].kcal; $('sugar').textContent = F[f].sugar;
+  $('fallback').src = F[f].img;
+  updateOrder();
+  showModel(f);
+  if (fromStrip) scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+}
+document.querySelectorAll('.picker button').forEach(b => b.addEventListener('click', () => setFlavour(b.dataset.f)));
+document.querySelectorAll('.fl').forEach(b => b.addEventListener('click', () => setFlavour(b.dataset.f, true)));
+
+function updateOrder() {
+  $('price').textContent = '$' + pack.p;
+  $('per').textContent = '$' + (pack.p / pack.n).toFixed(2) + ' per can';
+  $('add').textContent = `Add ${pack.n} cans of ${F[current].name}`;
+}
+document.querySelectorAll('.packs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.packs button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  pack = { n: +b.dataset.n, p: +b.dataset.p }; updateOrder();
+}));
+$('add').addEventListener('click', () => { cart += pack.n; $('cart-n').textContent = cart; $('added').textContent = `Added ${pack.n} cans of ${F[current].name}. ${cart} cans in your cart.`; });
+$('news').addEventListener('submit', e => { e.preventDefault(); $('news-ok').textContent = 'Subscribed. See you in summer.'; e.target.reset(); });
+updateOrder();
+
+/* ---------------- 3D can ---------------- */
+let showModel = () => {};
+try {
+  const THREE = await import('three');
+  const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+  const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+  const stage = $('stage');
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  stage.prepend(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+  const cam = new THREE.PerspectiveCamera(24, 3 / 4, 0.01, 10);
+  cam.position.set(0, 0.015, 0.44); cam.lookAt(0, 0, 0);
+  const holder = new THREE.Group(); holder.rotation.z = -0.08; scene.add(holder);
+  const loader = new GLTFLoader(), cache = {};
+  // models load as .glb; a .glb.txt file holding base64 also works (handy on hosts that refuse .glb)
+  const getBuf = async url => { const r = await fetch(url); if (!r.ok) throw new Error(url + ' ' + r.status);
+    if (!url.endsWith('.txt')) return r.arrayBuffer();
+    const bin = atob((await r.text()).trim()); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u.buffer; };
+  const load = f => cache[f] || (cache[f] = getBuf(F[f].model).then(buf => new Promise((res, rej) => loader.parse(buf, '', g => {
+    const m = g.scene; const box = new THREE.Box3().setFromObject(m); const c = box.getCenter(new THREE.Vector3());
+    m.position.sub(c); const wrap = new THREE.Group(); wrap.add(m); res(wrap);
+  }, rej))));
+  let shown = null;
+  showModel = async f => { const m = await load(f); if (current !== f) return; if (shown) holder.remove(shown); holder.add(m); shown = m; stage.classList.add('ready'); };
+  const resize = () => { const r = stage.getBoundingClientRect(); renderer.setSize(r.width, r.height, false); cam.aspect = r.width / r.height; cam.updateProjectionMatrix(); };
+  new ResizeObserver(resize).observe(stage); resize();
+
+  // drag to spin, with a little inertia; slow idle spin otherwise
+  let vel = reduce ? 0 : 0.006, dragging = false, lastX = 0;
+  stage.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener('pointermove', e => { if (!dragging) return; const dx = e.clientX - lastX; lastX = e.clientX; holder.rotation.y += dx * 0.012; vel = dx * 0.0012; });
+  stage.addEventListener('pointerup', () => dragging = false);
+  stage.addEventListener('pointercancel', () => dragging = false);
+  const clock = new THREE.Clock();
+  renderer.setAnimationLoop(() => {
+    const t = clock.getElapsedTime();
+    if (!dragging) { holder.rotation.y += vel; vel += ((reduce ? 0 : 0.006) - vel) * 0.02; }
+    if (!reduce) holder.position.y = Math.sin(t * 1.4) * 0.006;
+    renderer.render(scene, cam);
+  });
+  showModel(current);
+  Object.keys(F).forEach(f => setTimeout(() => load(f), 1500)); // preload the rest
+} catch (err) {
+  // No WebGL or the 3D library could not load: the still image stays in place.
+  console.warn('3D view unavailable', err);
+}
+</script>
+</body>
+</html>

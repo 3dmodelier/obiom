@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Okno — Brand & Digital Studio</title>
+<meta name="description" content="Okno is an independent brand and digital studio. Identity, websites and motion for companies that make real things.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+/* =========================================================
+   OKNO — studio template
+   Layout: one wide wordmark that answers the cursor, then a
+   strict 12-column grid. Everything left-aligned to column 1.
+   Edit colours and fonts here; the whole page follows.
+   ========================================================= */
+:root{
+  --paper:#E4E7EA;      /* cool concrete */
+  --paper-2:#D6DADE;    /* row hover / quiet fills */
+  --ink:#000000;
+  --ink-2:#4A5058;      /* secondary text */
+  --cobalt:#2638FF;     /* the one accent */
+  --on-cobalt:#FFFFFF;
+  --line:rgba(0,0,0,.18);
+  --display:"Anybody", "Arial Narrow", Arial, sans-serif;
+  --body:"Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --gutter:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  --step--1:clamp(.82rem,.78rem + .2vw,.92rem);
+  --step-0:clamp(1rem,.96rem + .2vw,1.1rem);
+  --step-1:clamp(1.25rem,1.1rem + .7vw,1.6rem);
+  --step-2:clamp(1.6rem,1.2rem + 1.8vw,2.6rem);
+  --step-3:clamp(2.2rem,1.4rem + 3.6vw,4.4rem);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#000000; --paper-2:#15171B; --ink:#E4E7EA; --ink-2:#9AA1AA;
+    --cobalt:#6574FF; --on-cobalt:#000000; --line:rgba(228,231,234,.2); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#000000; --paper-2:#15171B; --ink:#E4E7EA; --ink-2:#9AA1AA;
+  --cobalt:#6574FF; --on-cobalt:#000000; --line:rgba(228,231,234,.2); color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--step-0);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
+.wrap{padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px)}
+
+/* ---------- top bar ---------- */
+.bar{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-block:18px;font-size:var(--step--1)}
+.bar nav{display:flex;gap:clamp(14px,3vw,36px);flex-wrap:wrap}
+.bar a{text-decoration:none}
+.bar a:hover{text-decoration:underline;text-underline-offset:4px}
+.bar .clock{color:var(--ink-2);font-variant-numeric:tabular-nums}
+.bar .clock b{color:var(--ink);font-weight:500}
+
+/* ---------- wordmark ---------- */
+.mark{display:flex;justify-content:center;margin:0;font-family:var(--display);font-weight:800;line-height:.8;white-space:nowrap;
+  font-size:30vw;letter-spacing:-.01em;padding-block:clamp(8px,2vw,24px) 0;user-select:none;cursor:default;overflow:hidden}
+.mark span{display:block;font-variation-settings:"wdth" 100;transition:font-variation-settings .5s cubic-bezier(.2,.7,.2,1)}
+.mark.live span{transition:font-variation-settings .12s linear}
+
+.lede{padding-block:clamp(28px,5vw,64px) clamp(48px,9vw,120px);align-items:end}
+.lede p{grid-column:1 / span 7;margin:0;font-size:var(--step-2);line-height:1.12;letter-spacing:-.01em;text-wrap:balance}
+.lede .meta{grid-column:9 / span 4;font-size:var(--step--1);color:var(--ink-2);display:grid;gap:4px}
+.lede .meta a:not(.cta){color:var(--ink)}
+.cta{display:inline-flex;align-items:center;gap:.6em;background:var(--cobalt);color:var(--on-cobalt);text-decoration:none;
+  padding:.85em 1.3em;border-radius:999px;font-weight:600;font-size:var(--step-0);margin-top:14px;width:max-content}
+.cta:hover{filter:brightness(1.12)}
+
+/* ---------- section heads ---------- */
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:1px solid var(--ink);padding-block:14px 28px}
+.head h2{margin:0;font-family:var(--display);font-weight:700;font-variation-settings:"wdth" 62;font-size:var(--step-3);line-height:.95;letter-spacing:-.01em}
+.head small{color:var(--ink-2);font-size:var(--step--1)}
+
+/* ---------- work index ---------- */
+.work{padding-bottom:clamp(64px,10vw,140px)}
+.rows{list-style:none;margin:0;padding:0}
+.rows li{border-bottom:1px solid var(--line)}
+.rows a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);align-items:baseline;
+  padding-block:18px;text-decoration:none;transition:background-color .2s}
+.rows a:hover,.rows a:focus-visible{background:var(--paper-2)}
+.rows .client{grid-column:1 / span 5;font-family:var(--display);font-weight:600;font-variation-settings:"wdth" 75;font-size:var(--step-2);line-height:1;transition:font-variation-settings .35s}
+.rows a:hover .client{font-variation-settings:"wdth" 130}
+.rows .what{grid-column:6 / span 4;color:var(--ink-2)}
+.rows .year{grid-column:11 / span 2;text-align:right;font-variant-numeric:tabular-nums}
+.peek{position:fixed;left:0;top:0;width:min(30vw,380px);aspect-ratio:4/5;pointer-events:none;z-index:20;opacity:0;
+  transform:translate(-50%,-50%) scale(.92);transition:opacity .2s, transform .2s;border-radius:6px;overflow:hidden}
+.peek.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.peek .art{position:absolute;inset:0;display:none}
+.peek .art.on{display:block}
+
+/* posters inside the peek: pure CSS so the template ships with zero images */
+.art-kvas{background:#F2C230}
+.art-kvas::before{content:"K";position:absolute;left:-6%;bottom:-18%;font:900 34vw/1 var(--display);font-size:min(34vw,420px);font-variation-settings:"wdth" 50;color:#7A1E0E}
+.art-kvas::after{content:"";position:absolute;right:12%;top:12%;width:34%;aspect-ratio:1;border-radius:50%;background:#7A1E0E}
+.art-lumen{background:#0E1C3A}
+.art-lumen::before{content:"";position:absolute;inset:18% 18% 30%;border-radius:50% 50% 0 0;background:linear-gradient(#FFE8A3,#FF9D4D)}
+.art-lumen::after{content:"lumen";position:absolute;left:8%;bottom:7%;font:700 2.4rem/1 var(--display);font-variation-settings:"wdth" 140;color:#FFE8A3}
+.art-polyana{background:#D9E8D2}
+.art-polyana::before{content:"";position:absolute;left:10%;right:10%;bottom:12%;height:58%;background:
+  radial-gradient(circle at 25% 100%,#2F5D3A 0 24%,transparent 25%),radial-gradient(circle at 70% 100%,#2F5D3A 0 34%,transparent 35%)}
+.art-polyana::after{content:"Polyana";position:absolute;left:10%;top:10%;font:500 2.6rem/1 var(--display);font-variation-settings:"wdth" 60;color:#2F5D3A}
+.art-tram{background:#E8352B}
+.art-tram::before{content:"";position:absolute;left:0;right:0;top:46%;height:6px;background:#fff;box-shadow:0 22px 0 #fff}
+.art-tram::after{content:"7";position:absolute;right:8%;top:4%;font:900 18rem/1 var(--display);font-variation-settings:"wdth" 50;color:#fff}
+.art-sauna{background:#3B2A22}
+.art-sauna::before{content:"";position:absolute;inset:14%;border:3px solid #E7B98A;border-radius:12px}
+.art-sauna::after{content:"98°";position:absolute;left:20%;top:30%;font:300 6rem/1 var(--display);font-variation-settings:"wdth" 150;color:#E7B98A}
+
+/* ---------- services ---------- */
+.services{padding-bottom:clamp(64px,10vw,140px)}
+.svc{border-bottom:1px solid var(--line)}
+.svc button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);align-items:baseline;padding-block:22px}
+.svc button:focus-visible{outline:2px solid var(--cobalt);outline-offset:-2px}
+.svc .t{grid-column:1 / span 8;font-family:var(--display);font-weight:600;font-variation-settings:"wdth" 75;font-size:var(--step-2);line-height:1}
+.svc .sign{grid-column:12;justify-self:end;font-family:var(--display);font-size:var(--step-2);line-height:1;transition:transform .3s}
+.svc[data-open] .sign{transform:rotate(45deg)}
+.svc .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.svc[data-open] .body{grid-template-rows:1fr}
+.svc .body>div{overflow:hidden}
+.svc .inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);padding-bottom:26px}
+.svc .inner p{grid-column:1 / span 6;margin:0;color:var(--ink-2);max-width:56ch}
+.svc .inner ul{grid-column:8 / span 5;margin:0;padding:0;list-style:none;columns:2;column-gap:20px}
+.svc .inner li{padding-block:3px;break-inside:avoid}
+
+/* ---------- process (a real sequence, so it is numbered by week) ---------- */
+.process{padding-bottom:clamp(64px,10vw,140px)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,28px);margin:0;padding:0;list-style:none}
+.steps li{border-top:3px solid var(--ink);padding-top:14px;display:grid;gap:10px;align-content:start}
+.steps .wk{font-family:var(--display);font-variation-settings:"wdth" 140;font-weight:300;font-size:var(--step-3);line-height:.9;color:var(--cobalt);font-variant-numeric:tabular-nums}
+.steps h3{margin:0;font-size:var(--step-1);font-weight:600}
+.steps p{margin:0;color:var(--ink-2);font-size:var(--step--1);max-width:34ch}
+
+/* ---------- quote ---------- */
+.quote{padding-bottom:clamp(64px,10vw,140px)}
+.quote blockquote{grid-column:3 / span 9;margin:0;font-size:var(--step-2);line-height:1.15;text-wrap:balance}
+.quote figcaption{grid-column:3 / span 9;margin-top:18px;color:var(--ink-2);font-size:var(--step--1)}
+
+/* ---------- contact ---------- */
+.contact{background:var(--cobalt);color:var(--on-cobalt);padding-block:clamp(40px,7vw,90px) 28px}
+.contact p{margin:0 0 clamp(18px,3vw,36px);font-size:var(--step-1);max-width:30ch}
+.mail{display:block;margin-bottom:14px;font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,9.4vw,10rem);line-height:.95;letter-spacing:-.02em;
+  text-decoration:none;font-variation-settings:"wdth" 70;transition:font-variation-settings .5s cubic-bezier(.2,.7,.2,1);overflow-wrap:anywhere}
+.mail:hover,.mail:focus-visible{font-variation-settings:"wdth" 118}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:clamp(40px,8vw,100px);font-size:var(--step--1)}
+.foot div{display:grid;gap:2px}
+.foot a{text-decoration:none}
+.foot a:hover{text-decoration:underline}
+.copy-btn{all:unset;cursor:pointer;border-bottom:1px solid currentColor;font-size:var(--step--1)}
+.copy-btn:focus-visible{outline:2px solid var(--on-cobalt);outline-offset:3px}
+
+/* ---------- responsive ---------- */
+@media (max-width: 820px){
+  .lede p,.lede .meta{grid-column:1 / -1}
+  .lede .meta{margin-top:22px}
+  .rows .client{grid-column:1 / span 12}
+  .rows .what{grid-column:1 / span 9;margin-top:6px}
+  .rows .year{grid-column:10 / span 3}
+  .svc .t{grid-column:1 / span 10}
+  .svc .inner p,.svc .inner ul{grid-column:1 / -1}
+  .svc .inner ul{margin-top:14px}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:30px}
+  .quote blockquote,.quote figcaption{grid-column:1 / -1}
+  .peek{display:none}
+  .bar nav a:not(.keep){display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="bar">
+    <nav aria-label="Main">
+      <a class="keep" href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a class="keep" href="#contact">Contact</a>
+    </nav>
+    <span class="clock" aria-label="Studio local time">Minsk <b id="clock">12:00</b></span>
+  </div>
+  <!-- The wordmark. Change the letters to your studio name: one <span> per letter. -->
+  <h1 class="mark" id="mark" aria-label="Okno">
+    <span aria-hidden="true">O</span><span aria-hidden="true">K</span><span aria-hidden="true">N</span><span aria-hidden="true">O</span>
+  </h1>
+</header>
+
+<main>
+  <section class="wrap">
+    <div class="grid lede">
+      <p>We build identities and websites for companies that make real things: breweries, bakeries, tram depots and the odd sauna.</p>
+      <div class="meta">
+        <span>Independent studio, 9 people</span>
+        <span>Taking projects from March 2027</span>
+        <a class="cta" href="#contact">Start a project</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap work" id="work" aria-labelledby="work-h">
+    <div class="head"><h2 id="work-h">Selected work</h2><small>2021 to now</small></div>
+    <ul class="rows">
+      <li><a href="#" data-art="kvas"><span class="client">Kvas Nº 3</span><span class="what">Identity, labels, website</span><span class="year">2026</span></a></li>
+      <li><a href="#" data-art="lumen"><span class="client">Lumen Bakery</span><span class="what">Identity, packaging</span><span class="year">2025</span></a></li>
+      <li><a href="#" data-art="polyana"><span class="client">Polyana Farms</span><span class="what">Website, online shop</span><span class="year">2025</span></a></li>
+      <li><a href="#" data-art="tram"><span class="client">Line 7 Depot</span><span class="what">Wayfinding, motion</span><span class="year">2024</span></a></li>
+      <li><a href="#" data-art="sauna"><span class="client">Para Sauna Club</span><span class="what">Identity, booking site</span><span class="year">2023</span></a></li>
+    </ul>
+  </section>
+
+  <section class="wrap services" id="services" aria-labelledby="svc-h">
+    <div class="head"><h2 id="svc-h">What we do</h2><small>Three disciplines, one team</small></div>
+    <div class="svc" data-open>
+      <button aria-expanded="true" aria-controls="s1"><span class="t">Brand identity</span><span class="sign" aria-hidden="true">+</span></button>
+      <div class="body" id="s1"><div><div class="inner">
+        <p>A name, a mark and a voice that still make sense in five years. We start with how your product is made and who buys it, then design from there.</p>
+        <ul><li>Naming</li><li>Logo &amp; type</li><li>Packaging</li><li>Guidelines</li><li>Signage</li><li>Tone of voice</li></ul>
+      </div></div></div>
+    </div>
+    <div class="svc">
+      <button aria-expanded="false" aria-controls="s2"><span class="t">Websites &amp; shops</span><span class="sign" aria-hidden="true">+</span></button>
+      <div class="body" id="s2"><div><div class="inner">
+        <p>Fast sites your team can edit on its own. We design, build and hand over a CMS with a short video on how to use it.</p>
+        <ul><li>Marketing sites</li><li>Online shops</li><li>Booking flows</li><li>CMS setup</li><li>3D product views</li><li>Hosting</li></ul>
+      </div></div></div>
+    </div>
+    <div class="svc">
+      <button aria-expanded="false" aria-controls="s3"><span class="t">Motion</span><span class="sign" aria-hidden="true">+</span></button>
+      <div class="body" id="s3"><div><div class="inner">
+        <p>Logo animations, product loops and social cuts that move the way your brand looks. Delivered as files you can post the same day.</p>
+        <ul><li>Logo motion</li><li>Product loops</li><li>Social kits</li><li>Screens</li></ul>
+      </div></div></div>
+    </div>
+  </section>
+
+  <section class="wrap process" id="process" aria-labelledby="pr-h">
+    <div class="head"><h2 id="pr-h">How a project runs</h2><small>Typical identity project, 10 weeks</small></div>
+    <ol class="steps">
+      <li><span class="wk">W1</span><h3>Workshop</h3><p>Half a day at your place. We look at the product, the shelf and the people who buy it.</p></li>
+      <li><span class="wk">W3</span><h3>Two directions</h3><p>Two complete routes, shown on real things: labels, a homepage, a van.</p></li>
+      <li><span class="wk">W6</span><h3>One system</h3><p>We build out the chosen route into a working toolkit and test it in print.</p></li>
+      <li><span class="wk">W10</span><h3>Handover</h3><p>Files, guidelines and a call with your printer. We stay on for three months of fixes.</p></li>
+    </ol>
+  </section>
+
+  <section class="wrap quote" aria-label="Client feedback">
+    <figure class="grid" style="margin:0">
+      <blockquote>“Sales of the new bottles beat the old ones in the first month. People photograph the label.”</blockquote>
+      <figcaption>Hanna Lis, founder of Kvas Nº 3</figcaption>
+    </figure>
+  </section>
+</main>
+
+<footer class="contact wrap" id="contact">
+  <p>Tell us what you make and when you need it. We reply within two working days.</p>
+  <a class="mail" id="mail" href="mailto:hello@okno.studio">hello@okno.studio</a>
+  <button class="copy-btn" id="copy" type="button">Copy address</button>
+  <div class="foot">
+    <div><span>Okno Studio</span><span>Kastryčnickaja 16, Minsk</span></div>
+    <div><a href="#">Instagram</a><a href="#">Behance</a><a href="#">LinkedIn</a></div>
+    <div><span>© 2026 Okno</span><span>Built with care in Minsk</span></div>
+  </div>
+</footer>
+
+<div class="peek" id="peek" aria-hidden="true">
+  <div class="art art-kvas" data-k="kvas"></div>
+  <div class="art art-lumen" data-k="lumen"></div>
+  <div class="art art-polyana" data-k="polyana"></div>
+  <div class="art art-tram" data-k="tram"></div>
+  <div class="art art-sauna" data-k="sauna"></div>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+
+  /* --- clock: studio local time (Europe/Minsk) --- */
+  const clock = document.getElementById('clock');
+  const tick = () => { try { clock.textContent = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Minsk'}).format(new Date()); } catch(e){} };
+  tick(); setInterval(tick, 20000);
+
+  /* --- wordmark: fits the full width once, then letters near the cursor get wider
+         while the others narrow, so the total width stays the same --- */
+  const mark = document.getElementById('mark');
+  const letters = [...mark.children];
+  const BASE = 100, RANGE = 46;
+  const fit = () => {
+    letters.forEach(el => el.style.fontVariationSettings = `"wdth" ${BASE}, "wght" 800`);
+    mark.style.fontSize = '100px';
+    const inner = letters.reduce((w, el) => w + el.getBoundingClientRect().width, 0);
+    const avail = mark.clientWidth - 2;
+    mark.style.fontSize = (100 * avail / inner) + 'px';
+  };
+  const setAxes = (x) => {
+    const ks = letters.map(el => { const b = el.getBoundingClientRect();
+      const d = Math.abs((b.left + b.width / 2) - x) / mark.clientWidth; return Math.max(0, 1 - d * 2.4); });
+    const mean = ks.reduce((a, b) => a + b, 0) / ks.length;
+    letters.forEach((el, i) => {
+      const k = ks[i] - mean;
+      el.style.fontVariationSettings = `"wdth" ${(BASE + k * RANGE * 2).toFixed(1)}, "wght" ${Math.round(800 + k * 200)}`;
+    });
+  };
+  fit();
+  document.fonts && document.fonts.ready.then(fit);
+  addEventListener('resize', fit);
+  if (!reduce) {
+    if (fine) {
+      addEventListener('pointermove', e => { if (e.clientY < mark.getBoundingClientRect().bottom + 160) { mark.classList.add('live'); setAxes(e.clientX); } }, { passive: true });
+    }
+    // one slow sweep on load: the only motion on touch screens
+    let t0 = null;
+    const sweep = ts => { if (!t0) t0 = ts; const p = Math.min(1, (ts - t0) / 2000);
+      const r = mark.getBoundingClientRect(); setAxes(r.left + r.width * (p * 1.3 - .15));
+      if (p < 1) requestAnimationFrame(sweep); else if (!fine) fit(); };
+    setTimeout(() => requestAnimationFrame(sweep), 400);
+  }
+
+  /* --- work index: floating poster follows the cursor --- */
+  const peek = document.getElementById('peek');
+  const arts = [...peek.children];
+  document.querySelectorAll('.rows a').forEach(a => {
+    a.addEventListener('pointerenter', () => { arts.forEach(x => x.classList.toggle('on', x.dataset.k === a.dataset.art)); peek.classList.add('on'); });
+    a.addEventListener('pointerleave', () => peek.classList.remove('on'));
+    a.addEventListener('click', e => e.preventDefault());
+  });
+  addEventListener('pointermove', e => { peek.style.left = e.clientX + 'px'; peek.style.top = e.clientY + 'px'; }, { passive: true });
+
+  /* --- services accordion --- */
+  document.querySelectorAll('.svc button').forEach(btn => btn.addEventListener('click', () => {
+    const box = btn.parentElement, open = box.hasAttribute('data-open');
+    box.toggleAttribute('data-open', !open); btn.setAttribute('aria-expanded', String(!open));
+  }));
+
+  /* --- copy email --- */
+  const copy = document.getElementById('copy'), mail = document.getElementById('mail');
+  copy.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(mail.textContent.trim()); copy.textContent = 'Copied'; }
+    catch (e) { const s = getSelection(), rg = document.createRange(); rg.selectNodeContents(mail); s.removeAllRanges(); s.addRange(rg); copy.textContent = 'Selected, press Ctrl+C'; }
+    setTimeout(() => copy.textContent = 'Copy address', 2200);
+  });
+})();
+</script>
+</body>
+</html>

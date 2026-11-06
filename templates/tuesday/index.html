@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tuesday — Class booking for small studios</title>
+<meta name="description" content="Tuesday takes bookings, payments and waitlists for pottery, yoga and art studios, so you can teach instead of answering messages.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,400..900;1,400..700&display=swap">
+<style>
+/* =========================================================
+   TUESDAY — SaaS landing template
+   Concept: the product is the hero. A real week schedule
+   fills itself with classes on load; everything else is
+   plain and quiet so that one moment carries the page.
+   Class colours are data (one per class type), not decor.
+   ========================================================= */
+:root{
+  --paper:#F3F5EF;
+  --paper-2:#E7EBE2;
+  --card:#FFFFFF;
+  --forest:#183A2B;     /* text + primary */
+  --forest-2:#4E6559;   /* secondary text */
+  --marigold:#FFB627;   /* pottery */
+  --sky:#9CC9EA;        /* yoga */
+  --rose:#F49AB0;       /* drawing */
+  --line:rgba(24,58,43,.14);
+  --font:"Albert Sans", "Helvetica Neue", Arial, sans-serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#112A1F; --paper-2:#163527; --card:#1C3F2F; --forest:#EEF2EA; --forest-2:#A8BBAE; --line:rgba(238,242,234,.14); color-scheme:dark }
+}
+:root[data-theme="dark"]{ --paper:#112A1F; --paper-2:#163527; --card:#1C3F2F; --forest:#EEF2EA; --forest-2:#A8BBAE; --line:rgba(238,242,234,.14); color-scheme:dark }
+
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;overflow-x:clip;background:var(--paper);color:var(--forest);font-family:var(--font);font-size:clamp(1rem,.96rem + .2vw,1.1rem);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:2px;border-radius:4px}
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1240px;margin-inline:auto}
+h1,h2,h3{margin:0;line-height:1.02;letter-spacing:-.025em;text-wrap:balance}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 1rem var(--font);text-decoration:none;border-radius:999px;padding:.85em 1.4em;border:0;cursor:pointer}
+.btn.main{background:var(--forest);color:var(--paper)}
+.btn.main:hover{opacity:.9}
+.btn.ghost{background:transparent;color:var(--forest);box-shadow:inset 0 0 0 1.5px var(--forest)}
+
+/* ---------- nav ---------- */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.45rem;letter-spacing:-.04em;text-decoration:none}
+.logo svg{width:28px;height:28px}
+.nav nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px);font-weight:500}
+.nav nav a{text-decoration:none}
+.nav nav a:not(.btn):hover{text-decoration:underline;text-underline-offset:4px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(24px,5vw,64px) clamp(48px,8vw,100px)}
+.hero h1{font-size:clamp(2.6rem,1.6rem + 4.4vw,5.4rem);font-weight:850}
+.hero p{margin:22px 0 28px;font-size:clamp(1.1rem,1rem + .45vw,1.35rem);color:var(--forest-2);max-width:36ch}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hero small{display:block;margin-top:14px;color:var(--forest-2)}
+
+/* the live week */
+.week{background:var(--card);border-radius:20px;padding:16px;box-shadow:0 30px 60px -30px rgba(24,58,43,.35);position:relative;min-width:0}
+.week header{display:flex;justify-content:space-between;align-items:center;padding:2px 4px 12px;font-weight:700}
+.week header span{font-weight:500;color:var(--forest-2);font-size:.9rem}
+.grid7{display:grid;grid-template-columns:42px repeat(7,minmax(0,1fr));grid-template-rows:auto repeat(4,34px) 10px repeat(4,34px);gap:3px;font-size:.78rem}
+.grid7 .dh{text-align:center;font-weight:700;padding-bottom:6px;color:var(--forest-2)}
+.grid7 .dh.today{color:var(--forest)}
+.grid7 .tm{color:var(--forest-2);font-variant-numeric:tabular-nums;align-self:start;line-height:1;padding-top:2px}
+.grid7 .cell{background:var(--paper);border-radius:6px}
+.cls{border-radius:8px;padding:5px 6px;font-weight:700;font-size:.72rem;line-height:1.15;color:#183A2B;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;
+  transform:translateY(8px) scale(.96);opacity:0;transition:transform .45s cubic-bezier(.2,.9,.25,1.3),opacity .3s}
+.cls.in{transform:none;opacity:1}
+.cls .sp{font-weight:500;font-variant-numeric:tabular-nums}
+.cls.pot{background:var(--marigold)} .cls.yoga{background:var(--sky)} .cls.draw{background:var(--rose)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.82rem;color:var(--forest-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.toast{position:absolute;right:-10px;bottom:-22px;background:var(--forest);color:var(--paper);border-radius:14px;padding:12px 14px;font-size:.88rem;line-height:1.35;
+  max-width:270px;box-shadow:0 16px 30px -12px rgba(0,0,0,.4);opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s}
+.toast.in{opacity:1;transform:none}
+.toast b{display:block}
+
+/* ---------- replaces ---------- */
+.replaces{padding-block:clamp(40px,7vw,90px);border-top:1px solid var(--line)}
+.replaces h2{font-size:clamp(1.6rem,1.2rem + 1.6vw,2.4rem);font-weight:800;margin-bottom:22px}
+.struck{display:flex;flex-wrap:wrap;gap:6px 26px;margin:0;padding:0;list-style:none}
+.struck li{overflow-wrap:anywhere;font-size:clamp(1.6rem,1rem + 2.6vw,3.2rem);font-weight:800;letter-spacing:-.03em;color:var(--forest-2);text-decoration:line-through;text-decoration-thickness:.09em;text-decoration-color:var(--rose)}
+
+/* ---------- features: three rows, alternating ---------- */
+.feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center;padding-block:clamp(36px,6vw,80px)}
+.feat:nth-of-type(even) .copy{order:2}
+.feat h3{font-size:clamp(1.8rem,1.3rem + 1.8vw,2.9rem);font-weight:850}
+.feat p{color:var(--forest-2);max-width:42ch;margin:16px 0 0}
+.feat ul{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.feat li{display:flex;gap:10px;align-items:baseline}
+.feat li::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--forest);transform:translateY(-2px)}
+.mock{background:var(--paper-2);border-radius:24px;padding:clamp(18px,3vw,36px);display:grid;gap:12px;min-width:0}
+.ui{background:var(--card);border-radius:var(--r);padding:16px 18px;box-shadow:0 1px 0 var(--line)}
+.ui .row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.ui .t{font-weight:800}
+.ui .s{color:var(--forest-2);font-size:.9rem}
+.bar{height:8px;border-radius:99px;background:var(--paper-2);overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;background:var(--marigold);border-radius:99px}
+.pill{font-size:.78rem;font-weight:800;padding:.3em .7em;border-radius:99px;background:var(--paper-2);white-space:nowrap}
+.pill.ok{background:#CBEBD4;color:#183A2B}
+.pill.wait{background:var(--rose);color:#183A2B}
+.avatars{display:flex}
+.avatars span{width:30px;height:30px;border-radius:50%;border:2px solid var(--card);margin-left:-8px;display:grid;place-items:center;font-size:.72rem;font-weight:800;color:#183A2B}
+.avatars span:first-child{margin-left:0}
+.pass{background:var(--forest);color:var(--paper);border-radius:18px;padding:20px;display:grid;gap:14px}
+.pass .dots{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.pass .dots i{aspect-ratio:1;border-radius:50%;border:2px solid var(--marigold)}
+.pass .dots i.on{background:var(--marigold)}
+
+/* ---------- pricing calculator ---------- */
+.price{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);padding-block:clamp(48px,8vw,110px);border-top:1px solid var(--line);align-items:start}
+.price h2{font-size:clamp(2rem,1.4rem + 2.4vw,3.6rem);font-weight:850}
+.price .lead{color:var(--forest-2);max-width:40ch;margin-top:16px}
+.calc{background:var(--card);border-radius:24px;padding:clamp(20px,3vw,32px);display:grid;gap:18px;box-shadow:0 30px 60px -36px rgba(24,58,43,.4)}
+.calc label{font-weight:700;display:flex;justify-content:space-between;gap:12px}
+.calc output{font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--forest)}
+.total{display:flex;align-items:baseline;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+.total b{font-size:clamp(2.6rem,2rem + 2vw,3.6rem);font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.calc dl{display:grid;grid-template-columns:1fr auto;gap:6px 16px;margin:0;color:var(--forest-2);font-size:.95rem}
+.calc dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;color:var(--forest)}
+
+/* ---------- quote ---------- */
+.quote{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);padding-block:clamp(40px,7vw,90px);align-items:end}
+.quote blockquote{margin:0;font-size:clamp(1.6rem,1.1rem + 1.8vw,2.6rem);font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.quote figcaption{margin-top:18px;color:var(--forest-2)}
+.stat{background:var(--marigold);color:#183A2B;border-radius:24px;padding:24px}
+.stat b{display:block;font-size:clamp(2.6rem,2rem + 2.4vw,4.2rem);font-weight:900;letter-spacing:-.04em;line-height:1}
+.stat span{display:block;margin-top:8px;font-weight:600;max-width:24ch}
+
+/* ---------- faq ---------- */
+.faq{padding-block:clamp(40px,7vw,90px);border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(24px,5vw,72px)}
+.faq h2{font-size:clamp(1.8rem,1.3rem + 1.8vw,2.8rem);font-weight:850}
+details{border-bottom:1px solid var(--line);padding-block:16px}
+summary{cursor:pointer;font-weight:700;font-size:1.12rem;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:400;font-size:1.4rem;line-height:1;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:10px 0 0;color:var(--forest-2);max-width:60ch}
+
+/* ---------- final ---------- */
+.final{background:var(--forest);color:var(--paper);border-radius:28px;padding:clamp(28px,6vw,72px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:end;margin-block:clamp(20px,4vw,40px) clamp(40px,6vw,70px)}
+.final h2{font-size:clamp(2.2rem,1.4rem + 3.4vw,4.6rem);font-weight:900;max-width:14ch}
+.final .btn.main{background:var(--marigold);color:#183A2B}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:0 32px;color:var(--forest-2);font-size:.92rem}
+footer a{text-decoration:none}
+
+@media (max-width: 920px){
+  .hero,.feat,.price,.quote,.faq{grid-template-columns:1fr}
+  .feat:nth-of-type(even) .copy{order:0}
+  .toast{right:8px}
+  .nav nav a:not(.btn){display:none}
+}
+@media (max-width: 480px){
+  .grid7{grid-template-columns:30px repeat(7,minmax(0,1fr));grid-template-rows:auto repeat(4,30px) 8px repeat(4,30px);font-size:.66rem}
+  .cls{font-size:.6rem;padding:3px 4px}
+  .cls .sp{display:none}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} .cls,.toast{opacity:1;transform:none} }
+</style>
+</head>
+<body>
+
+<header class="wrap nav">
+  <a class="logo" href="#" aria-label="Tuesday home">
+    <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="4" width="24" height="22" rx="6" fill="currentColor"/><rect x="7" y="12" width="6" height="6" rx="2" fill="#FFB627"/><rect x="8" y="1" width="3" height="6" rx="1.5" fill="currentColor"/><rect x="17" y="1" width="3" height="6" rx="1.5" fill="currentColor"/></svg>
+    tuesday
+  </a>
+  <nav aria-label="Main">
+    <a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+    <a href="#" class="btn ghost">Log in</a>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div>
+      <h1>Your studio’s week, booked while you teach.</h1>
+      <p>Tuesday takes bookings, payments and waitlists for pottery, yoga and art classes. No more spreadsheets or late-night messages.</p>
+      <div class="ctas"><a class="btn main" href="#pricing">Start free for 14 days</a><a class="btn ghost" href="#features">See how it works</a></div>
+      <small>No card needed. Set up in an evening.</small>
+    </div>
+
+    <div class="week" aria-label="Example week schedule for a small studio">
+      <header>Clay &amp; Calm Studio <span>Week 46</span></header>
+      <div class="grid7" id="grid7"></div>
+      <div class="legend"><span><i style="background:var(--marigold)"></i>Pottery</span><span><i style="background:var(--sky)"></i>Yoga</span><span><i style="background:var(--rose)"></i>Life drawing</span></div>
+      <div class="toast" id="toast" role="status"><b>Anya booked Wheel throwing</b>Tue 18:00, 5 of 6 spots taken. Paid €28.</div>
+    </div>
+  </section>
+
+  <section class="wrap replaces" aria-labelledby="rep-h">
+    <h2 id="rep-h">What Tuesday replaces</h2>
+    <ul class="struck">
+      <li>Instagram DMs</li><li>the paper sign-up sheet</li><li>Excel</li><li>“Did you pay yet?”</li><li>no-shows</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="features" aria-label="Features">
+    <div class="feat">
+      <div class="copy">
+        <h3>A booking page that fills classes for you</h3>
+        <p>Students pick a class, pay and get a reminder the day before. When a class is full, they join the waitlist and get the next free spot.</p>
+        <ul><li>Your own link and colours</li><li>Card, Apple Pay and Google Pay</li><li>Automatic waitlist</li></ul>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="ui"><div class="row"><span class="t">Wheel throwing, beginners</span><span class="pill ok">5 / 6</span></div><div class="s">Tue 18:00, 2 h, with Marta</div><div class="bar"><i style="width:83%"></i></div></div>
+        <div class="ui"><div class="row"><span class="t">Slow flow yoga</span><span class="pill wait">Waitlist 3</span></div><div class="s">Wed 08:00, 1 h, with Oleg</div><div class="bar"><i style="width:100%;background:var(--sky)"></i></div></div>
+        <div class="ui"><div class="row"><div class="avatars"><span style="background:var(--marigold)">AK</span><span style="background:var(--sky)">LM</span><span style="background:var(--rose)">DS</span><span style="background:#CBEBD4">+2</span></div><span class="s">Booked today</span></div></div>
+      </div>
+    </div>
+
+    <div class="feat">
+      <div class="copy">
+        <h3>Passes and memberships that count themselves</h3>
+        <p>Sell a 10-class pass or a monthly membership. Tuesday counts each visit and tells the student when it is time to renew.</p>
+        <ul><li>Class packs and memberships</li><li>Gift cards</li><li>Renewal reminders</li></ul>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="pass">
+          <div class="row" style="display:flex;justify-content:space-between"><b>10-class pass</b><span>Lena M.</span></div>
+          <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+          <span>7 used, 3 left. Valid until 31 March.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat">
+      <div class="copy">
+        <h3>Know what the month earned, without a spreadsheet</h3>
+        <p>See paid bookings, open spots and your busiest classes. Export everything for your accountant in one click.</p>
+        <ul><li>Monthly report</li><li>Payouts every Monday</li><li>CSV export</li></ul>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="ui"><div class="row"><span class="s">November so far</span><span class="pill">+18% vs Oct</span></div>
+          <div style="font-weight:900;font-size:2.2rem;letter-spacing:-.04em;margin-top:4px">€4,860</div>
+          <svg viewBox="0 0 300 70" width="100%" height="70" style="margin-top:8px" role="img" aria-label="Bookings rising through the month">
+            <path d="M0 60 L30 52 L60 55 L90 40 L120 44 L150 30 L180 34 L210 22 L240 26 L270 12 L300 14 L300 70 L0 70Z" fill="var(--marigold)" opacity=".35"/>
+            <path d="M0 60 L30 52 L60 55 L90 40 L120 44 L150 30 L180 34 L210 22 L240 26 L270 12 L300 14" fill="none" stroke="var(--forest)" stroke-width="2.5"/>
+            <circle cx="300" cy="14" r="4" fill="var(--forest)"/>
+          </svg>
+        </div>
+        <div class="ui"><div class="row"><span class="t">Busiest class</span><span class="s">Wheel throwing, Tue</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap price" id="pricing" aria-labelledby="pr-h">
+    <div>
+      <h2 id="pr-h">One plan. You pay more only when you are busy.</h2>
+      <p class="lead">€19 a month with 100 bookings included. After that, 10 cents per booking. Every feature, any number of teachers.</p>
+    </div>
+    <div class="calc">
+      <label for="bk">Bookings per month <output id="bk-out">180</output></label>
+      <input id="bk" type="range" min="20" max="800" step="10" value="180">
+      <dl>
+        <dt>Plan</dt><dd>€19.00</dd>
+        <dt>Extra bookings</dt><dd id="extra">80 × €0.10</dd>
+      </dl>
+      <div class="total"><b id="total">€27.00</b><span>per month</span></div>
+      <a class="btn main" href="#">Start free for 14 days</a>
+    </div>
+  </section>
+
+  <section class="wrap quote" aria-label="Customer story">
+    <figure style="margin:0">
+      <blockquote>“I used to spend Sunday evenings answering messages. Now I spend them at the wheel.”</blockquote>
+      <figcaption>Marta Kovalenko, Clay &amp; Calm Studio</figcaption>
+    </figure>
+    <div class="stat"><b>1 in 20</b><span>students miss a class now. It used to be 1 in 5, before reminders and prepayment.</span></div>
+  </section>
+
+  <section class="wrap faq" id="faq" aria-labelledby="faq-h">
+    <h2 id="faq-h">Questions</h2>
+    <div>
+      <details open><summary>Can students book without an account?</summary><p>Yes. They enter a name, email and pay. Tuesday creates the profile for them in the background.</p></details>
+      <details><summary>Which payment methods work?</summary><p>Cards, Apple Pay and Google Pay through Stripe. Money arrives in your bank every Monday.</p></details>
+      <details><summary>Can I move my students from a spreadsheet?</summary><p>Upload a CSV with names and emails. Remaining class passes come across too.</p></details>
+      <details><summary>What happens after the free trial?</summary><p>Nothing, unless you choose to continue. We never charge without asking first.</p></details>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="final">
+      <h2>Next Tuesday could be fully booked.</h2>
+      <a class="btn main" href="#">Start free for 14 days</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 Tuesday</span>
+  <span><a href="#">Privacy</a> &nbsp; <a href="#">Terms</a> &nbsp; <a href="#">hello@tuesday.app</a></span>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ---- build the week: edit CLASSES to change the demo ---- */
+  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], HOURS = ['08','09','10','11','17','18','19','20'];
+  const ROW = r => r < 4 ? r + 2 : r + 3; // a thin gap row separates mornings from evenings
+  const TODAY = 1; // Tue
+  // [day index, start row (index in HOURS), hours long, type, title, spots]
+  const CLASSES = [
+    [0,0,1,'yoga','Slow flow','8/10'],[2,0,1,'yoga','Slow flow','10/10'],[4,0,1,'yoga','Slow flow','6/10'],
+    [1,5,2,'pot','Wheel throwing','5/6'],[3,5,2,'pot','Hand building','4/8'],[5,2,2,'pot','Family clay','7/8'],
+    [2,6,2,'draw','Life drawing','9/12'],[6,1,2,'draw','Sketch walk','5/12'],[5,4,1,'yoga','Yin','6/10'],[0,5,2,'pot','Glazing','3/6']
+  ];
+  const g = document.getElementById('grid7');
+  g.appendChild(document.createElement('span'));
+  DAYS.forEach((d, i) => { const e = document.createElement('span'); e.className = 'dh' + (i === TODAY ? ' today' : ''); e.textContent = d; g.appendChild(e); });
+  HOURS.forEach((h, r) => {
+    const t = document.createElement('span'); t.className = 'tm'; t.textContent = h + ':00'; t.style.gridRow = ROW(r); t.style.gridColumn = 1; g.appendChild(t);
+    DAYS.forEach((_, c) => { const e = document.createElement('span'); e.className = 'cell'; e.style.gridRow = ROW(r); e.style.gridColumn = c + 2; g.appendChild(e); });
+  });
+  const blocks = CLASSES.map(([d, r, h, type, title, sp]) => {
+    const e = document.createElement('div'); e.className = 'cls ' + type;
+    e.style.gridColumn = d + 2; e.style.gridRow = `${ROW(r)} / span ${h}`;
+    e.innerHTML = `<span>${title}</span><span class="sp">${sp}</span>`; g.appendChild(e); return e;
+  });
+  const toast = document.getElementById('toast');
+  if (reduce) { blocks.forEach(b => b.classList.add('in')); toast.classList.add('in'); }
+  else {
+    blocks.forEach((b, i) => setTimeout(() => b.classList.add('in'), 500 + i * 140));
+    setTimeout(() => toast.classList.add('in'), 500 + blocks.length * 140 + 300);
+  }
+
+  /* ---- price calculator: €19 includes 100 bookings, then €0.10 each ---- */
+  const BASE = 19, INCL = 100, PER = 0.10;
+  const bk = document.getElementById('bk'), out = document.getElementById('bk-out');
+  const fmt = n => '€' + n.toFixed(2);
+  const calc = () => { const n = +bk.value, extra = Math.max(0, n - INCL);
+    out.textContent = n; document.getElementById('extra').textContent = `${extra} × ${fmt(PER)}`;
+    document.getElementById('total').textContent = fmt(BASE + extra * PER); };
+  bk.addEventListener('input', calc); calc();
+})();
+</script>
+</body>
+</html>

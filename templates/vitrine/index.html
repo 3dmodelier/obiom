@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vitrine — Ilya Varan, 3D objects</title>
+<meta name="description" content="Portfolio of Ilya Varan, a 3D artist who makes stylized objects and product models for brands, games and AR.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
+<style>
+/* =========================================================
+   VITRINE — portfolio template for 3D artists
+   Concept: a museum catalogue. Each work is an object on a
+   plinth with a wall label: catalogue number, polycount,
+   real-world scale. Gallery-green walls, paper labels.
+   Plinth colour matches the render background (#ECEBE7),
+   so swap in renders shot on the same backdrop.
+   ========================================================= */
+:root{
+  --wall:#2C3A33;       /* gallery green */
+  --wall-2:#34443B;
+  --plinth:#ECEBE7;     /* = render backdrop */
+  --label:#F7F6F2;      /* paper of wall labels */
+  --ink:#151515;        /* text on paper */
+  --on-wall:#E9E6DC;    /* text on the wall */
+  --muted:#A9B2A8;      /* secondary text on the wall */
+  --brass:#C8A35A;      /* the one accent: catalogue numbers, focus */
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+/* Light variant (a pale limewashed room) applies only when the site sets data-theme="light" on <html>. */
+:root[data-theme="light"]{ --wall:#D9DDD3; --wall-2:#CDD3C7; --on-wall:#1C2420; --muted:#56615A; --brass:#8A6A26; color-scheme:light }
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--wall);color:var(--on-wall);font-family:var(--serif);font-size:clamp(1.05rem,1rem + .25vw,1.2rem);line-height:1.6;font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1480px;margin-inline:auto}
+.num{font-family:var(--sans);font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+/* ---------- masthead ---------- */
+.mast{display:grid;grid-template-columns:1fr auto;gap:12px 32px;align-items:end;padding-block:28px 22px;border-bottom:1px solid color-mix(in srgb,var(--on-wall) 22%,transparent)}
+.mast .who{font-family:var(--sans);font-variation-settings:"wdth" 118;font-weight:600;font-size:clamp(1.1rem,1rem + .6vw,1.45rem);letter-spacing:.005em;line-height:1.1;text-decoration:none}
+.mast nav{display:flex;gap:clamp(16px,2.6vw,34px);font-family:var(--sans);font-size:.92rem}
+.mast nav a{text-decoration:none;color:var(--muted)}
+.mast nav a:hover{color:var(--on-wall)}
+.mast .sub{grid-column:1 / -1;margin:0;color:var(--muted);font-style:italic}
+
+/* ---------- hero: one object, one label ---------- */
+.hall{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);align-items:end;padding-block:clamp(28px,5vw,72px)}
+.plinth{position:relative;background:var(--plinth);border-radius:2px;overflow:hidden;aspect-ratio:1/1}
+.plinth img{width:100%;height:100%;object-fit:cover}
+.plinth .spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 45% at 50% 38%,transparent 0,rgba(0,0,0,.28) 100%);opacity:0;animation:lights 1.6s .3s ease-out forwards}
+@keyframes lights{to{opacity:1}}
+.hall .intro h1{margin:0 0 .4em;font-weight:400;font-size:clamp(2.3rem,1.4rem + 3.6vw,4.9rem);line-height:1.02;letter-spacing:-.015em;text-wrap:balance}
+.hall .intro p{margin:0 0 1.6em;max-width:36ch;color:var(--muted)}
+
+/* wall label, used in the hero and in the dialog */
+.walllabel{background:var(--label);color:var(--ink);padding:18px 20px 16px;max-width:360px;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.walllabel .cat{font-family:var(--sans);font-size:.78rem;color:#6B5A2E;font-variant-numeric:tabular-nums}
+.walllabel h2,.walllabel h3{margin:.2em 0 .1em;font-weight:500;font-size:1.45rem;line-height:1.15}
+.walllabel .year{font-style:italic;color:#555}
+.walllabel dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:12px 0 0;font-family:var(--sans);font-size:.82rem}
+.walllabel dt{color:#6A6A6A}
+.walllabel dd{margin:0;font-variant-numeric:tabular-nums}
+
+/* ---------- catalogue ---------- */
+.cat-head{display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between;align-items:baseline;padding-block:clamp(40px,7vw,90px) 20px}
+.cat-head h2{margin:0;font-weight:400;font-size:clamp(1.9rem,1.3rem + 2vw,3rem);line-height:1.05}
+.filters{display:flex;gap:6px;flex-wrap:wrap;font-family:var(--sans);font-size:.88rem}
+.filters button{all:unset;cursor:pointer;padding:.45em .9em;border:1px solid color-mix(in srgb,var(--on-wall) 35%,transparent);border-radius:999px;color:var(--on-wall)}
+.filters button[aria-pressed="true"]{background:var(--on-wall);color:var(--wall);border-color:var(--on-wall)}
+.filters button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+.room{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(18px,3vw,40px) clamp(14px,2.2vw,28px);padding-bottom:clamp(60px,9vw,120px)}
+/* deliberate rhythm: big, small, small, then a wide one */
+.obj{grid-column:span 4;display:grid;gap:12px;align-content:start}
+.obj.big{grid-column:span 6}
+.obj.wide{grid-column:span 8}
+.obj button{all:unset;cursor:zoom-in;display:block;background:var(--plinth);border-radius:2px;overflow:hidden;aspect-ratio:1/1;position:relative}
+.obj.wide button{aspect-ratio:16/10}
+.obj button img{width:100%;height:100%;object-fit:contain;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.obj button:hover img{transform:scale(1.035)}
+.obj button:focus-visible{outline:2px solid var(--brass);outline-offset:4px}
+.obj .tag{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline}
+.obj .tag .n{font-family:var(--sans);color:var(--brass);font-size:.82rem;font-variant-numeric:tabular-nums}
+.obj .tag h3{margin:0;font-weight:400;font-size:1.15rem;line-height:1.2}
+.obj .tag .poly{font-family:var(--sans);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.obj[hidden]{display:none}
+
+/* ---------- dialog ---------- */
+dialog{border:0;padding:0;background:var(--wall-2);color:var(--on-wall);width:min(1180px,calc(100vw - 32px));max-height:calc(100vh - 32px);border-radius:3px}
+dialog::backdrop{background:rgba(10,14,12,.72)}
+.dlg{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(16px,3vw,36px);padding:clamp(14px,2.5vw,28px)}
+.dlg .view{position:relative;background:var(--plinth);aspect-ratio:1/1;border-radius:2px;overflow:hidden}
+.dlg .view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .35s}
+.dlg .view img.wire{opacity:0}
+.dlg .view[data-mode="wire"] img.wire{opacity:1}
+.dlg .side{display:grid;gap:18px;align-content:start}
+.toggle{display:inline-flex;border:1px solid color-mix(in srgb,var(--on-wall) 35%,transparent);border-radius:999px;padding:3px;font-family:var(--sans);font-size:.85rem;width:max-content}
+.toggle button{all:unset;cursor:pointer;padding:.4em .95em;border-radius:999px}
+.toggle button[aria-pressed="true"]{background:var(--on-wall);color:var(--wall)}
+.toggle button:focus-visible{outline:2px solid var(--brass)}
+.dlg .note{margin:0;color:var(--muted);max-width:42ch}
+.close{all:unset;cursor:pointer;font-family:var(--sans);font-size:.9rem;justify-self:start;border-bottom:1px solid currentColor}
+.close:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+
+/* ---------- about + commission ---------- */
+.about{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding-block:clamp(50px,8vw,110px);border-top:1px solid color-mix(in srgb,var(--on-wall) 22%,transparent)}
+.about .bio{grid-column:1 / span 7}
+.about .bio p{margin:0 0 1em;font-size:clamp(1.3rem,1.05rem + 1vw,1.85rem);line-height:1.35;font-weight:300;max-width:34ch}
+.about .facts{grid-column:9 / span 4;display:grid;gap:22px;font-family:var(--sans);font-size:.9rem}
+.about .facts h3{margin:0 0 6px;font-weight:600;font-size:.9rem}
+.about .facts ul{margin:0;padding:0;list-style:none;color:var(--muted)}
+.commission{background:var(--label);color:var(--ink);padding:clamp(22px,4vw,48px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(20px,4vw,56px);margin-bottom:clamp(40px,6vw,80px)}
+.commission h2{margin:0 0 .4em;font-weight:400;font-size:clamp(1.8rem,1.3rem + 1.8vw,2.8rem);line-height:1.05}
+.commission p{margin:0;color:#4D4D4D;max-width:34ch}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px;font-family:var(--sans);font-size:.92rem}
+form label{display:grid;gap:6px}
+form .full{grid-column:1 / -1}
+input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid #CFCBBF;border-radius:2px;padding:.7em .8em;width:100%}
+textarea{min-height:110px;resize:vertical}
+form button{grid-column:1 / -1;justify-self:start;font:600 .95rem var(--sans);background:var(--ink);color:var(--label);border:0;border-radius:2px;padding:.9em 1.5em;cursor:pointer}
+form button:hover{background:#333}
+.sent{grid-column:1 / -1;margin:0;color:#2E5E3E;font-weight:600}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:22px 34px;font-family:var(--sans);font-size:.85rem;color:var(--muted);border-top:1px solid color-mix(in srgb,var(--on-wall) 22%,transparent)}
+footer a{text-decoration:none}
+footer a:hover{color:var(--on-wall)}
+
+@media (max-width: 900px){
+  .hall{grid-template-columns:1fr}
+  .obj,.obj.big,.obj.wide{grid-column:span 6}
+  .obj.wide button{aspect-ratio:1/1}
+  .dlg{grid-template-columns:1fr}
+  .about .bio,.about .facts{grid-column:1 / -1}
+  .commission{grid-template-columns:1fr}
+}
+@media (max-width: 560px){
+  .obj,.obj.big,.obj.wide{grid-column:1 / -1}
+  form{grid-template-columns:1fr}
+  .mast{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} .plinth .spot{opacity:1} }
+</style>
+</head>
+<body>
+
+<header class="wrap mast">
+  <a class="who" href="#">Ilya Varan</a>
+  <nav aria-label="Main"><a href="#catalogue">Catalogue</a><a href="#about">About</a><a href="#commission">Commission</a></nav>
+  <p class="sub">3D objects for brands, games and AR. Catalogue of works, 2023 to 2026.</p>
+</header>
+
+<main>
+  <section class="wrap hall" aria-label="Featured object">
+    <div class="plinth"><img src="img/astronaut.jpg" alt="Stylized astronaut in a white suit with a dark visor" width="1100" height="1100"><span class="spot"></span></div>
+    <div class="intro">
+      <h1>Small worlds, built polygon by polygon.</h1>
+      <p>I model characters and products that look friendly up close and stay light enough for the web.</p>
+      <div class="walllabel">
+        <span class="cat">Cat. 01</span>
+        <h2>Astronaut, Classic</h2>
+        <span class="year">2026</span>
+        <dl>
+          <dt>Triangles</dt><dd>103,668</dd>
+          <dt>Height</dt><dd>1.90 m</dd>
+          <dt>Materials</dt><dd>7, PBR</dd>
+          <dt>Formats</dt><dd>GLB, OBJ, USDZ</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="catalogue" aria-labelledby="cat-h">
+    <div class="cat-head">
+      <h2 id="cat-h">Catalogue</h2>
+      <div class="filters" role="group" aria-label="Filter by style">
+        <button type="button" data-f="all" aria-pressed="true">All 8</button>
+        <button type="button" data-f="stylized" aria-pressed="false">Stylized</button>
+        <button type="button" data-f="product" aria-pressed="false">Product</button>
+        <button type="button" data-f="lowpoly" aria-pressed="false">Low poly</button>
+      </div>
+    </div>
+
+    <!-- Each object: data-* attributes fill the dialog. Add or remove articles freely. -->
+    <div class="room" id="room">
+      <article class="obj big" data-kind="stylized" data-n="02" data-title="Astronaut, Gold visor" data-year="2026" data-img="img/helmet.jpg" data-wire="img/helmet-wire.jpg" data-tris="103,668" data-size="1.90 m" data-mat="7, PBR" data-note="Same suit, a gold visor and blue trims. The visor is a separate mesh, so it can be swapped for a logo or a face.">
+        <button type="button" aria-label="Open Astronaut, Gold visor"><img src="img/helmet.jpg" alt="Close-up of an astronaut helmet with a gold visor" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">02</span><h3>Astronaut, Gold visor</h3><span class="poly">104k tris</span></div>
+      </article>
+      <article class="obj big" data-kind="product" data-n="03" data-title="Soda can, Cherry" data-year="2026" data-img="img/soda.jpg" data-wire="img/soda-wire.jpg" data-tris="10,000" data-size="12.2 cm" data-mat="4, PBR" data-note="A 355 ml can with a printable label area. Built for drink brands that want to show every flavour from one model.">
+        <button type="button" aria-label="Open Soda can, Cherry"><img src="img/soda.jpg" alt="Red soda can labelled cherry" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">03</span><h3>Soda can, Cherry</h3><span class="poly">10k tris</span></div>
+      </article>
+      <article class="obj" data-kind="stylized" data-n="04" data-title="Toy rocket" data-year="2026" data-img="img/rocket.jpg" data-wire="img/rocket-wire.jpg" data-tris="18,524" data-size="1.00 m" data-mat="5, PBR" data-note="Three fins, a glass porthole and a ring of rivets. Meant to stand next to the astronaut.">
+        <button type="button" aria-label="Open Toy rocket"><img src="img/rocket.jpg" alt="White and red toy rocket with three fins" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">04</span><h3>Toy rocket</h3><span class="poly">18.5k tris</span></div>
+      </article>
+      <article class="obj" data-kind="product" data-n="05" data-title="Mug with print area" data-year="2026" data-img="img/mug.jpg" data-wire="img/mug-wire.jpg" data-tris="8,384" data-size="9.6 cm" data-mat="4, PBR" data-note="A 330 ml mug with real wall thickness. The print sits on its own mesh, so a logo drops in without touching the body.">
+        <button type="button" aria-label="Open Mug with print area"><img src="img/mug.jpg" alt="White mug with a sunrise print and coffee inside" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">05</span><h3>Mug with print area</h3><span class="poly">8.4k tris</span></div>
+      </article>
+      <article class="obj" data-kind="product" data-n="06" data-title="Potted cactus" data-year="2026" data-img="img/cactus.jpg" data-wire="img/cactus-wire.jpg" data-tris="24,464" data-size="27 cm" data-mat="6, PBR" data-note="Ribbed body, two arms and about 250 spines merged into one mesh to keep draw calls low.">
+        <button type="button" aria-label="Open Potted cactus"><img src="img/cactus.jpg" alt="Green cactus in a terracotta pot with a pink flower" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">06</span><h3>Potted cactus</h3><span class="poly">24k tris</span></div>
+      </article>
+      <article class="obj wide" data-kind="lowpoly" data-n="07" data-title="Astronaut, Low poly" data-year="2026" data-img="img/lowpoly.jpg" data-wire="img/lowpoly-wire.jpg" data-tris="4,842" data-size="1.90 m" data-mat="7, flat" data-note="The same character cut down to under five thousand triangles for mobile games. Flat shading, no textures.">
+        <button type="button" aria-label="Open Astronaut, Low poly"><img src="img/lowpoly.jpg" alt="Faceted low poly astronaut in a purple suit" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">07</span><h3>Astronaut, Low poly</h3><span class="poly">4.8k tris</span></div>
+      </article>
+      <article class="obj" data-kind="lowpoly" data-n="08" data-title="Rocket, Low poly" data-year="2026" data-img="img/lprocket.jpg" data-wire="img/lprocket-wire.jpg" data-tris="1,034" data-size="1.00 m" data-mat="4, flat" data-note="About a thousand triangles. Reads well at thumbnail size, which is where most game props live.">
+        <button type="button" aria-label="Open Rocket, Low poly"><img src="img/lprocket.jpg" alt="Faceted purple and yellow low poly rocket" loading="lazy" width="1100" height="1100"></button>
+        <div class="tag"><span class="n">08</span><h3>Rocket, Low poly</h3><span class="poly">1k tris</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap about" id="about" aria-labelledby="about-h">
+    <div class="bio">
+      <h2 id="about-h" style="position:absolute;left:-9999px">About</h2>
+      <p>I spent six years modelling props for mobile games before going independent.</p>
+      <p>Now I make objects for brands that want their products to turn, zoom and sit in a customer’s room.</p>
+    </div>
+    <div class="facts">
+      <div><h3>Clients</h3><ul><li>Kvas Nº 3</li><li>Lumen Bakery</li><li>Pixel Harbor Games</li><li>Polyana Farms</li></ul></div>
+      <div><h3>Tools</h3><ul><li>Blender</li><li>Substance Painter</li><li>three.js</li></ul></div>
+      <div><h3>Delivery</h3><ul><li>GLB for web, USDZ for iPhone AR</li><li>Usually 5 to 10 working days</li></ul></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="commission" aria-labelledby="com-h">
+    <div class="commission">
+      <div>
+        <h2 id="com-h">Commission an object</h2>
+        <p>Send a photo or a sketch and where the model will live. I reply with a price and a date within a day.</p>
+      </div>
+      <form id="form">
+        <label>Name<input id="f-name" name="name" autocomplete="name" required></label>
+        <label>Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+        <label class="full">The model will be used for
+          <select id="f-use" name="use"><option>A website or online shop</option><option>AR on phones</option><option>A game</option><option>Print or video</option></select>
+        </label>
+        <label class="full">What should I make?<textarea id="f-msg" name="msg" placeholder="Two bottles of our new shampoo, both sizes."></textarea></label>
+        <button type="submit">Send request</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>Ilya Varan, Minsk</span>
+  <span><a href="#">Instagram</a> &nbsp; <a href="#">ArtStation</a> &nbsp; <a href="#">Sketchfab</a></span>
+  <span>© 2026</span>
+</footer>
+
+<dialog id="dlg" aria-labelledby="d-title">
+  <div class="dlg">
+    <div class="view" id="d-view" data-mode="clay">
+      <img id="d-img" alt="">
+      <img id="d-wire" class="wire" alt="">
+    </div>
+    <div class="side">
+      <div class="walllabel">
+        <span class="cat" id="d-n">Cat. 00</span>
+        <h3 id="d-title">Object</h3>
+        <span class="year" id="d-year">2026</span>
+        <dl>
+          <dt>Triangles</dt><dd id="d-tris"></dd>
+          <dt>Size</dt><dd id="d-size"></dd>
+          <dt>Materials</dt><dd id="d-mat"></dd>
+        </dl>
+      </div>
+      <div class="toggle" role="group" aria-label="View">
+        <button type="button" data-m="clay" aria-pressed="true">Render</button>
+        <button type="button" data-m="wire" aria-pressed="false">Wireframe</button>
+      </div>
+      <p class="note" id="d-note"></p>
+      <button class="close" type="button" id="d-close">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  /* filters */
+  const btns = document.querySelectorAll('.filters button');
+  const objs = document.querySelectorAll('.obj');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    objs.forEach(o => o.hidden = !(b.dataset.f === 'all' || o.dataset.kind === b.dataset.f));
+  }));
+
+  /* object dialog with render / wireframe toggle */
+  const dlg = document.getElementById('dlg'), view = document.getElementById('d-view');
+  const $ = id => document.getElementById(id);
+  const setMode = m => { view.dataset.mode = m; document.querySelectorAll('.toggle button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === m))); };
+  objs.forEach(o => o.querySelector('button').addEventListener('click', () => {
+    const d = o.dataset;
+    $('d-img').src = d.img; $('d-img').alt = o.querySelector('img').alt;
+    $('d-wire').src = d.wire; $('d-wire').alt = d.title + ', wireframe';
+    $('d-n').textContent = 'Cat. ' + d.n; $('d-title').textContent = d.title; $('d-year').textContent = d.year;
+    $('d-tris').textContent = d.tris; $('d-size').textContent = d.size; $('d-mat').textContent = d.mat; $('d-note').textContent = d.note;
+    setMode('clay');
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  }));
+  document.querySelectorAll('.toggle button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.m)));
+  $('d-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+
+  /* commission form: replace this handler with your form service (Formspree, Basin, etc.) */
+  const form = $('form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const p = document.createElement('p'); p.className = 'sent'; p.setAttribute('role', 'status');
+    p.textContent = 'Request sent. I will reply to ' + $('f-email').value + ' within a day.';
+    form.replaceChildren(p);
+  });
+})();
+</script>
+</body>
+</html>
