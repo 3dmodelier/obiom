@@ -13,11 +13,11 @@
   --serif:"Fraunces",Georgia,serif; --sans:"Figtree",system-ui,sans-serif; --pad:clamp(16px,4vw,60px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{overflow-x:clip}
+html{scroll-padding-top:90px;overflow-x:clip}
 body{background:var(--sage);color:var(--forest);font:400 17px/1.6 var(--sans);overflow-x:clip}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--moss);outline-offset:3px}
-.wrap{padding:0 var(--pad);max-width:1320px;margin:0 auto}
+.wrap{padding-inline:var(--pad);max-width:1320px;margin:0 auto}
 h1,h2,h3{font-family:var(--serif);font-variation-settings:"SOFT" 100;font-weight:600;line-height:1.02;letter-spacing:-.01em}
 .btn{display:inline-block;background:var(--forest);color:var(--white);font:600 17px var(--sans);padding:15px 26px;border-radius:99px;text-decoration:none;border:0;cursor:pointer}
 .btn:hover{background:var(--moss)}

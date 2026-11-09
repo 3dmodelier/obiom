@@ -14,11 +14,11 @@
   --d:"Unbounded",system-ui,sans-serif; --s:"Figtree",system-ui,sans-serif; --pad:clamp(16px,4vw,60px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{overflow-x:clip;scroll-behavior:smooth}
+html{scroll-padding-top:90px;overflow-x:clip;scroll-behavior:smooth}
 body{background:var(--mist);color:var(--ink);font:400 17px/1.6 var(--s);overflow-x:clip}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--peri);outline-offset:3px}
-.wrap{padding:0 var(--pad);max-width:1280px;margin:0 auto}
+.wrap{padding-inline:var(--pad);max-width:1280px;margin:0 auto}
 h1,h2,h3{font-family:var(--d);font-weight:500;letter-spacing:-.02em;line-height:1.05}
 .btn{display:inline-flex;align-items:center;gap:10px;font:500 16px var(--s);padding:15px 26px;border-radius:99px;background:var(--ink);color:#fff;text-decoration:none;border:0;cursor:pointer;transition:transform .2s}
 .btn:hover{transform:translateY(-2px)}
@@ -154,7 +154,7 @@ footer{padding:50px var(--pad) 30px;max-width:1280px;margin:0 auto;display:flex;
 <section class="wrap" id="night">
   <div class="night">
     <header><h2>Last night, minute by minute</h2>
-      <div class="legend"><span><i style="background:#FFD9E4"></i>Awake</span><span><i style="background:#C8F0EC"></i>Light</span><span><i style="background:#9AA6FF"></i>REM</span><span><i style="background:#1C1D33"></i>Deep</span></div>
+      <div class="legend"><span><i style="background:#FF8FB1"></i>Awake</span><span><i style="background:#5FCFC2"></i>Light</span><span><i style="background:#6E7BFF"></i>REM</span><span><i style="background:#1C1D33"></i>Deep</span></div>
     </header>
     <div class="chart" id="chart"><div class="tip" id="tip"></div></div>
     <div class="hours"><span>23:10</span><span>01:00</span><span>03:00</span><span>05:00</span><span>06:52</span></div>
@@ -198,7 +198,7 @@ footer{padding:50px var(--pad) 30px;max-width:1280px;margin:0 auto;display:flex;
 const arc=document.getElementById('arc'),sc=document.getElementById('sc'),SCORE=86;
 new IntersectionObserver((es,o)=>{if(!es[0].isIntersecting)return;o.disconnect();arc.style.strokeDashoffset=326.7*(1-SCORE/100);let n=0;const t=setInterval(()=>{sc.textContent=n;if(++n>SCORE)clearInterval(t)},18)}).observe(arc);
 // hypnogram
-const ST=[["Awake",0,"#FFD9E4"],["Light",1,"#C8F0EC"],["REM",2,"#9AA6FF"],["Deep",3,"#1C1D33"]];
+const ST=[["Awake",0,"#FF8FB1"],["Light",1,"#5FCFC2"],["REM",2,"#6E7BFF"],["Deep",3,"#1C1D33"]];
 const seq=[0,1,1,3,3,1,2,1,3,1,2,2,1,0,1,3,1,2,2,1,1,2,1,0,1,2,2,1,0];
 const W=1000,H=220,step=W/seq.length,start=23*60+10;
 let r='';seq.forEach((s,i)=>{const y=s*48+16;r+=`<rect x="${i*step+1}" y="${y}" width="${step-2}" height="${H-y}" rx="8" fill="${ST[s][2]}" data-i="${i}" opacity=".9"/>`});

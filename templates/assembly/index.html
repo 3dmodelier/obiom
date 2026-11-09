@@ -14,11 +14,11 @@
   --pad:clamp(16px,4vw,56px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{overflow-x:clip}
+html{scroll-padding-top:90px;overflow-x:clip}
 body{background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--body);overflow-x:clip}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--red);outline-offset:3px}
-.wrap{padding:0 var(--pad);max-width:1440px;margin:0 auto}
+.wrap{padding-inline:var(--pad);max-width:1440px;margin:0 auto}
 
 /* nav */
 nav{display:flex;justify-content:space-between;align-items:center;padding:18px var(--pad);border-bottom:3px solid var(--ink);position:relative;z-index:5}

@@ -13,13 +13,13 @@
   --f:"Bricolage Grotesque",system-ui,sans-serif; --pad:clamp(16px,4vw,56px); --r:22px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{overflow-x:clip}
+html{scroll-padding-top:90px;overflow-x:clip}
 body{background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--f);overflow-x:clip;
   background-image:radial-gradient(var(--ink) 1.2px,transparent 1.3px);background-size:26px 26px;background-attachment:fixed}
 body::before{content:"";position:fixed;inset:0;background:var(--bg);opacity:.9;z-index:-1}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--grape);outline-offset:3px}
-.wrap{padding:0 var(--pad);max-width:1400px;margin:0 auto}
+.wrap{padding-inline:var(--pad);max-width:1400px;margin:0 auto}
 .btn{font:700 17px/1 var(--f);background:var(--sun);color:var(--ink);border:2.5px solid var(--ink);border-radius:99px;padding:14px 22px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;align-items:center;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
 .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
