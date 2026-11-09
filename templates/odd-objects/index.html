@@ -36,6 +36,7 @@ nav ul a{text-decoration:none} nav ul a:hover{text-decoration:wavy underline var
 .hero{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(20px,4vw,60px);align-items:center;padding:clamp(24px,5vw,70px) var(--pad) clamp(40px,7vw,100px);max-width:1400px;margin:0 auto}
 h1{font:800 clamp(56px,8.4vw,132px)/.88 var(--f);font-variation-settings:"wdth" 78;letter-spacing:-.02em}
 h1 .w{display:inline-block;transition:transform .3s}
+@media (min-width:901px){h1 .w:nth-child(4){white-space:nowrap}}
 h1 .w:nth-child(2){color:var(--grape);transform:rotate(-4deg)}
 h1 .w:nth-child(4){background:var(--pink);padding:0 .12em;border-radius:.2em;transform:rotate(2deg)}
 .hero p{font-size:clamp(18px,1.6vw,21px);max-width:40ch;margin:26px 0 30px}
