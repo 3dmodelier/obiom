@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Refill Row — bring the jar, we fill the rest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..800,100&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sage:#DCE3D1; --leaf:#C4D1B3; --forest:#1F3324; --moss:#5E7A4C; --sun:#EBC35A; --bark:#6B4F3A; --white:#F7F8F2;
+  --serif:"Fraunces",Georgia,serif; --sans:"Figtree",system-ui,sans-serif; --pad:clamp(16px,4vw,60px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--sage);color:var(--forest);font:400 17px/1.6 var(--sans);overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--moss);outline-offset:3px}
+.wrap{padding:0 var(--pad);max-width:1320px;margin:0 auto}
+h1,h2,h3{font-family:var(--serif);font-variation-settings:"SOFT" 100;font-weight:600;line-height:1.02;letter-spacing:-.01em}
+.btn{display:inline-block;background:var(--forest);color:var(--white);font:600 17px var(--sans);padding:15px 26px;border-radius:99px;text-decoration:none;border:0;cursor:pointer}
+.btn:hover{background:var(--moss)}
+.btn.ghost{background:none;color:var(--forest);box-shadow:inset 0 0 0 2px var(--forest)}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px var(--pad);max-width:1320px;margin:0 auto}
+.logo{font:600 26px var(--serif);font-variation-settings:"SOFT" 100;text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo svg{width:30px}
+nav ul{display:flex;gap:28px;list-style:none;font-weight:500}
+nav ul a{text-decoration:none} nav ul a:hover{color:var(--moss)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,5vw,70px);align-items:center;padding-top:clamp(20px,4vw,60px);padding-bottom:clamp(50px,7vw,100px)}
+h1{font-size:clamp(52px,7.4vw,112px)}
+h1 em{font-style:italic;color:var(--moss)}
+.hero p{font-size:clamp(18px,1.5vw,21px);max-width:42ch;margin:24px 0 32px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.blob{position:relative;aspect-ratio:1;max-width:560px;justify-self:center;width:100%}
+.blob svg{width:100%;height:100%}
+.leaf{transform-origin:50% 100%;animation:sway 6s ease-in-out infinite}
+.leaf.b{animation-delay:-3s}
+@keyframes sway{50%{transform:rotate(4deg)}}
+.stamp{position:absolute;right:4%;top:6%;width:120px;aspect-ratio:1;border-radius:50%;background:var(--sun);display:grid;place-items:center;text-align:center;font:600 15px/1.2 var(--serif);transform:rotate(10deg);padding:14px}
+
+/* calculator */
+.calc{background:var(--forest);color:var(--white);border-radius:40px 40px 40px 120px;padding:clamp(28px,5vw,64px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,70px);align-items:center}
+.calc h2{font-size:clamp(38px,4.6vw,64px);margin-bottom:18px}
+.calc label{display:block;font-weight:600;margin:22px 0 8px}
+.calc input[type=range]{width:100%;accent-color:var(--sun)}
+.sizes{display:flex;gap:10px;flex-wrap:wrap}
+.sizes button{font:600 16px var(--sans);padding:10px 16px;border-radius:99px;border:2px solid var(--leaf);background:none;color:var(--white);cursor:pointer}
+.sizes button[aria-pressed=true]{background:var(--sun);border-color:var(--sun);color:var(--forest)}
+.jar{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:end}
+.jar svg{width:clamp(120px,14vw,180px)}
+.out b{display:block;font:600 clamp(56px,7vw,96px)/1 var(--serif);color:var(--sun)}
+.out span{display:block;margin-bottom:16px;opacity:.85}
+#fill{transition:y .6s,height .6s}
+
+/* how */
+section{padding:clamp(64px,9vw,120px) 0}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+.sh h2{font-size:clamp(40px,5.4vw,76px);max-width:14ch}
+.sh p{max-width:40ch}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,40px);list-style:none;counter-reset:s}
+.steps li{counter-increment:s;padding-top:20px;border-top:2px solid var(--forest)}
+.steps li::before{content:counter(s);font:600 64px/1 var(--serif);color:var(--moss);display:block;margin-bottom:14px}
+.steps h3{font-size:28px;margin-bottom:8px}
+
+/* pantry list */
+.pantry{display:grid;grid-template-columns:240px 1fr;gap:clamp(24px,4vw,60px)}
+.cats{list-style:none;display:flex;flex-direction:column;gap:6px;position:sticky;top:20px;align-self:start}
+.cats button{font:500 18px var(--sans);text-align:left;width:100%;padding:10px 14px;border-radius:14px;border:0;background:none;color:var(--forest);cursor:pointer}
+.cats button[aria-pressed=true]{background:var(--white);font-weight:600}
+.items{list-style:none}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(31,51,36,.25)}
+.item i{width:44px;height:44px;border-radius:46% 54% 50% 50%/55% 45% 55% 45%;display:block}
+.item h3{font-size:22px}
+.item p{font-size:15px;opacity:.75}
+.item b{font:600 20px var(--serif)}
+.item small{display:block;text-align:right;font-size:13px;opacity:.7}
+
+/* visit */
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);background:var(--white);border-radius:120px 40px 40px 40px;padding:clamp(28px,5vw,64px)}
+.visit h2{font-size:clamp(38px,4.4vw,60px);margin-bottom:18px}
+.hours{list-style:none}
+.hours li{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed rgba(31,51,36,.35)}
+.hours li.today{font-weight:600;color:var(--moss)}
+.open{display:inline-flex;gap:8px;align-items:center;font-weight:600;margin-bottom:16px}
+.open i{width:10px;height:10px;border-radius:50%;background:var(--moss)}
+
+footer{padding:50px var(--pad) 30px;max-width:1320px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:15px}
+
+@media (max-width:900px){
+  nav ul{display:none}
+  .hero,.calc,.visit,.pantry{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .cats{position:static;flex-direction:row;flex-wrap:wrap}
+  .cats button{width:auto}
+  .calc{border-radius:40px} .visit{border-radius:40px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 28 C4 22 3 10 15 2 C27 10 26 22 15 28Z" fill="#5E7A4C"/><path d="M15 26 V8" stroke="#DCE3D1" stroke-width="2"/></svg>Refill Row</a>
+  <ul><li><a href="#calc">Your impact</a></li><li><a href="#pantry">Pantry</a></li><li><a href="#visit">Visit</a></li></ul>
+  <a class="btn" href="#visit">Find the shop</a>
+</nav>
+
+<main>
+<header class="wrap hero">
+  <div>
+    <h1>Bring the jar. <em>We'll fill</em> the rest.</h1>
+    <p>A neighbourhood refill shop for pantry staples, soap and cleaning supplies. Weigh your container, fill it up, pay for what's inside. No packaging, no plastic, no minimum.</p>
+    <div class="ctas"><a class="btn" href="#pantry">See what we stock</a><a class="btn ghost" href="#calc">Count your plastic</a></div>
+  </div>
+  <div class="blob" aria-hidden="true">
+    <svg viewBox="0 0 400 400">
+      <path d="M200 24 C300 20 380 96 372 196 C366 300 290 380 192 374 C92 368 24 296 30 196 C36 100 104 28 200 24Z" fill="#C4D1B3"/>
+      <g class="leaf"><path d="M120 330 C70 250 90 160 170 120 C190 200 170 280 120 330Z" fill="#5E7A4C"/><path d="M122 326 C130 250 150 190 168 126" stroke="#C4D1B3" stroke-width="3" fill="none"/></g>
+      <g class="leaf b"><path d="M290 330 C340 260 330 170 260 140 C236 210 246 286 290 330Z" fill="#1F3324"/></g>
+      <rect x="150" y="150" width="110" height="170" rx="26" fill="#F7F8F2" stroke="#1F3324" stroke-width="4"/>
+      <rect x="160" y="132" width="90" height="26" rx="8" fill="#6B4F3A"/>
+      <path d="M154 230 Q205 214 256 230 V296 Q256 316 236 316 H174 Q154 316 154 296Z" fill="#EBC35A"/>
+      <circle cx="186" cy="260" r="5" fill="#F7F8F2"/><circle cx="220" cy="280" r="4" fill="#F7F8F2"/>
+    </svg>
+    <div class="stamp">Plastic-free since 2019</div>
+  </div>
+</header>
+
+<section class="wrap" id="calc" style="padding-top:0">
+  <div class="calc">
+    <div>
+      <h2>How much plastic will you skip?</h2>
+      <p>Pick the jars you would bring and how often you'd refill them. We'll count the bottles and bags you won't throw away this year.</p>
+      <label>Jar size</label>
+      <div class="sizes" id="sizes"><button aria-pressed="false" data-g="500">500 ml</button><button aria-pressed="true" data-g="1000">1 litre</button><button aria-pressed="false" data-g="2000">2 litres</button></div>
+      <label for="jars">Jars per visit: <span id="jv">3</span></label>
+      <input type="range" id="jars" min="1" max="10" value="3">
+      <label for="freq">Visits per month: <span id="fv">2</span></label>
+      <input type="range" id="freq" min="1" max="8" value="2">
+    </div>
+    <div class="jar">
+      <svg viewBox="0 0 120 170" aria-hidden="true"><defs><clipPath id="jc"><rect x="10" y="26" width="100" height="138" rx="22"/></clipPath></defs><rect x="20" y="6" width="80" height="24" rx="8" fill="#6B4F3A"/><g clip-path="url(#jc)"><rect x="10" y="26" width="100" height="138" fill="#F7F8F2"/><rect id="fill" x="10" y="100" width="100" height="64" fill="#EBC35A"/></g><rect x="10" y="26" width="100" height="138" rx="22" fill="none" stroke="#F7F8F2" stroke-width="4"/></svg>
+      <div class="out"><b id="pk">72</b><span>plastic packages skipped a year</span><b id="kg" style="font-size:clamp(36px,4vw,52px)">2.9 kg</b><span>of plastic waste avoided</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sh"><h2>Three steps, no packaging</h2><p>First visit? We lend you jars for free. Return them next time, or keep them for a small deposit.</p></div>
+  <ol class="steps">
+    <li><h3>Weigh</h3><p>Put your empty container on the scale at the door. We print a sticker with its weight.</p></li>
+    <li><h3>Fill</h3><p>Fill it from any of our 140 dispensers, bins and taps. Take as little as you need.</p></li>
+    <li><h3>Pay</h3><p>We weigh it again at the till and you pay only for what's inside.</p></li>
+  </ol>
+</section>
+
+<section class="wrap" id="pantry">
+  <div class="sh"><h2>In the pantry this week</h2><p>Prices per 100 g or 100 ml. Everything is organic or comes from farms within 200 km.</p></div>
+  <div class="pantry">
+    <ul class="cats" id="cats">
+      <li><button aria-pressed="true" data-c="all">Everything</button></li>
+      <li><button aria-pressed="false" data-c="dry">Grains & dry</button></li>
+      <li><button aria-pressed="false" data-c="oil">Oils & liquids</button></li>
+      <li><button aria-pressed="false" data-c="clean">Soap & cleaning</button></li>
+    </ul>
+    <ul class="items" id="items"></ul>
+  </div>
+</section>
+
+<section class="wrap" id="visit">
+  <div class="visit">
+    <div>
+      <h2>Come by with a jar</h2>
+      <p class="open" id="open"><i></i>Checking hours…</p>
+      <p>14 Allotment Row, Bristol BS3 4LP<br>Two minutes from Bedminster station. Bike racks out front.</p>
+      <p style="margin-top:20px"><a class="btn" href="#">Get directions</a></p>
+    </div>
+    <ul class="hours" id="hours"></ul>
+  </div>
+</section>
+</main>
+
+<footer><span>Refill Row · Bristol</span><span>Wholesale · Jobs · Our suppliers</span></footer>
+
+<script>
+// calculator
+let size=1000;const jars=document.getElementById('jars'),freq=document.getElementById('freq');
+function calc(){const j=+jars.value,f=+freq.value;document.getElementById('jv').textContent=j;document.getElementById('fv').textContent=f;
+ const packs=Math.round(j*f*12*(size/1000));const kg=(packs*0.04).toFixed(1);
+ document.getElementById('pk').textContent=packs;document.getElementById('kg').textContent=kg+' kg';
+ const h=Math.min(130,20+packs/3.2);const r=document.getElementById('fill');r.setAttribute('y',164-h);r.setAttribute('height',h)}
+jars.oninput=freq.oninput=calc;
+document.getElementById('sizes').onclick=e=>{const b=e.target.closest('button');if(!b)return;size=+b.dataset.g;document.querySelectorAll('#sizes button').forEach(x=>x.setAttribute('aria-pressed',x===b));calc()};
+calc();
+// pantry
+const I=[["Rolled oats","dry","Organic, Gloucestershire","£0.32","#E2D3A8"],["Red lentils","dry","Split, quick to cook","£0.41","#D9824F"],["Basmati rice","dry","Brown, long grain","£0.46","#EDE4CC"],["Cold-pressed rapeseed oil","oil","Herefordshire farm","£0.95","#EBC35A"],["Apple cider vinegar","oil","Raw, with the mother","£0.58","#C9A15A"],["Olive oil","oil","Extra virgin, Crete","£1.70","#9AA34F"],["Laundry liquid","clean","Plant-based, fragrance-free","£0.29","#BFD6DA"],["Washing-up liquid","clean","Lemon and thyme","£0.24","#E7E39A"],["Castile soap","clean","Olive oil base, unscented","£0.65","#F1EEE2"]];
+const list=document.getElementById('items');
+function show(c){list.innerHTML=I.filter(i=>c==='all'||i[1]===c).map(i=>`<li class="item"><i style="background:${i[4]}"></i><div><h3>${i[0]}</h3><p>${i[2]}</p></div><div><b>${i[3]}</b><small>per 100 ${i[1]==='dry'?'g':'ml'}</small></div></li>`).join('')}
+document.getElementById('cats').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#cats button').forEach(x=>x.setAttribute('aria-pressed',x===b));show(b.dataset.c)};
+show('all');
+// hours, open now
+const H=[["Monday",null],["Tuesday",[9,19]],["Wednesday",[9,19]],["Thursday",[9,20]],["Friday",[9,20]],["Saturday",[9,17]],["Sunday",[10,15]]];
+const now=new Date(),d=(now.getDay()+6)%7,h=now.getHours()+now.getMinutes()/60;
+document.getElementById('hours').innerHTML=H.map((x,i)=>`<li class="${i===d?'today':''}"><span>${x[0]}</span><span>${x[1]?x[1][0]+':00 – '+x[1][1]+':00':'Closed'}</span></li>`).join('');
+const t=H[d][1];document.getElementById('open').lastChild.textContent=t&&h>=t[0]&&h<t[1]?` Open now, until ${t[1]}:00`:' Closed right now';
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lull — the ring that learns how you sleep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#EEF0F7; --ink:#1C1D33; --peri:#9AA6FF; --lilac:#D9C9FF; --ice:#C8F0EC; --blush:#FFD9E4; --soft:rgba(255,255,255,.55);
+  --a:#9AA6FF; --b:#D9C9FF; --c:#C8F0EC;
+  --d:"Unbounded",system-ui,sans-serif; --s:"Figtree",system-ui,sans-serif; --pad:clamp(16px,4vw,60px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip;scroll-behavior:smooth}
+body{background:var(--mist);color:var(--ink);font:400 17px/1.6 var(--s);overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--peri);outline-offset:3px}
+.wrap{padding:0 var(--pad);max-width:1280px;margin:0 auto}
+h1,h2,h3{font-family:var(--d);font-weight:500;letter-spacing:-.02em;line-height:1.05}
+.btn{display:inline-flex;align-items:center;gap:10px;font:500 16px var(--s);padding:15px 26px;border-radius:99px;background:var(--ink);color:#fff;text-decoration:none;border:0;cursor:pointer;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.glass{background:var(--soft);color:var(--ink);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9)}
+
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:26px;padding:10px 10px 10px 22px;border-radius:99px;background:rgba(255,255,255,.6);backdrop-filter:blur(18px);box-shadow:0 10px 40px -20px rgba(28,29,51,.35),inset 0 0 0 1px rgba(255,255,255,.8);width:max-content;max-width:calc(100% - 24px)}
+.logo{font:700 18px var(--d);text-decoration:none;letter-spacing:.02em}
+nav ul{display:flex;gap:22px;list-style:none;font-weight:500;font-size:15px}
+nav ul a{text-decoration:none;opacity:.75} nav ul a:hover{opacity:1}
+nav .btn{padding:10px 18px;font-size:15px}
+
+/* hero */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:20px;padding-top:110px;padding-bottom:60px}
+.hero h1{font-size:clamp(42px,5.8vw,86px);font-weight:300}
+.hero h1 b{font-weight:700}
+.hero p{font-size:clamp(18px,1.5vw,20px);max-width:40ch;margin:24px 0 32px;opacity:.8}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.orbwrap{position:relative;aspect-ratio:1;width:100%;max-width:560px;justify-self:center;display:grid;place-items:center}
+.orb{position:absolute;inset:6%;border-radius:50%;background:
+ radial-gradient(circle at 30% 28%,#fff 0 8%,transparent 30%),
+ radial-gradient(circle at 70% 70%,var(--c),transparent 55%),
+ radial-gradient(circle at 25% 75%,var(--b),transparent 60%),
+ radial-gradient(circle at 60% 35%,var(--a),transparent 65%),var(--b);
+ filter:blur(.5px);box-shadow:0 60px 120px -40px var(--a),inset -20px -30px 80px rgba(28,29,51,.12);animation:morph 14s ease-in-out infinite;transition:background 1s}
+@keyframes morph{0%,100%{border-radius:50% 48% 52% 50%/48% 52% 50% 50%;transform:rotate(0)}50%{border-radius:44% 56% 46% 54%/56% 44% 56% 44%;transform:rotate(12deg)}}
+.ring{position:relative;width:46%;aspect-ratio:1;border-radius:50%;background:conic-gradient(from 210deg,#fff,var(--a),#fff 40%,var(--b),#fff 80%);-webkit-mask:radial-gradient(circle,transparent 58%,#000 59%);mask:radial-gradient(circle,transparent 58%,#000 59%);box-shadow:0 0 0 1px rgba(255,255,255,.8);animation:spin 18s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chip{position:absolute;background:var(--soft);backdrop-filter:blur(16px);border-radius:20px;padding:12px 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 20px 40px -24px rgba(28,29,51,.4);font-size:14px}
+.chip b{display:block;font:500 22px var(--d)}
+.chip.c1{left:0;top:18%} .chip.c2{right:0;bottom:16%}
+
+/* score */
+section{padding:clamp(70px,9vw,130px) 0}
+.score{display:grid;grid-template-columns:auto 1fr;gap:clamp(30px,6vw,90px);align-items:center}
+.dial{position:relative;width:clamp(220px,26vw,320px);aspect-ratio:1}
+.dial svg{width:100%;transform:rotate(-90deg)}
+.dial .n{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.dial .n b{display:block;font:300 clamp(64px,7vw,96px)/1 var(--d)}
+.dial .n span{font-size:14px;opacity:.7}
+#arc{transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)}
+.score h2{font-size:clamp(34px,4vw,56px);font-weight:300;margin-bottom:18px}
+.score h2 b{font-weight:700}
+.factors{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.factors li{background:var(--soft);border-radius:24px;padding:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.9)}
+.factors b{display:block;font:500 26px var(--d)}
+.factors span{font-size:14px;opacity:.7}
+
+/* night chart */
+.night{background:linear-gradient(160deg,#fff 0%,var(--mist) 60%);border-radius:48px;padding:clamp(24px,4vw,56px);box-shadow:inset 0 0 0 1px #fff,0 40px 80px -60px rgba(28,29,51,.5)}
+.night header{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.night h2{font-size:clamp(30px,3.6vw,48px);font-weight:300}
+.legend{display:flex;gap:16px;font-size:14px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.chart{position:relative}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .tip{position:absolute;top:0;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:13px;padding:6px 10px;border-radius:10px;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
+.hours{display:flex;justify-content:space-between;font-size:13px;opacity:.6;margin-top:10px}
+
+/* specs */
+.specs{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(30px,6vw,90px);align-items:start}
+.specs h2{font-size:clamp(34px,4vw,56px);font-weight:300}
+.specs dl{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.specs dl div{padding:20px 0;border-top:1px solid rgba(28,29,51,.15)}
+.specs dt{font-size:14px;opacity:.65}
+.specs dd{font:500 22px var(--d)}
+
+/* order */
+.order{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center;background:var(--ink);color:#fff;border-radius:48px;padding:clamp(28px,5vw,64px)}
+.order h2{font-size:clamp(34px,4vw,56px);font-weight:300;margin-bottom:12px}
+.price{font:300 64px/1 var(--d);margin:18px 0}
+.price small{font:400 16px var(--s);opacity:.7}
+.swatches{display:flex;gap:12px;margin:10px 0 26px}
+.swatches button{width:48px;height:48px;border-radius:50%;border:0;cursor:pointer;box-shadow:inset 0 0 0 2px rgba(255,255,255,.3);transition:transform .2s}
+.swatches button[aria-pressed=true]{box-shadow:0 0 0 3px var(--ink),0 0 0 5px #fff;transform:scale(1.05)}
+.order .btn{background:#fff;color:var(--ink)}
+.preview{aspect-ratio:1;border-radius:40px;position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.18),transparent 60%)}
+.preview .ring{width:58%}
+.finish{position:absolute;bottom:20px;left:0;right:0;text-align:center;font:500 16px var(--d)}
+
+footer{padding:50px var(--pad) 30px;max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:14px;opacity:.75}
+
+@media (max-width:900px){
+  nav ul{display:none}
+  .hero,.score,.specs,.order{grid-template-columns:1fr}
+  .hero{min-height:auto}
+  .factors{grid-template-columns:1fr 1fr 1fr}
+  .dial{justify-self:center}
+}
+@media (max-width:520px){.factors{grid-template-columns:1fr}.specs dl{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#">lull</a>
+  <ul><li><a href="#score">Sleep score</a></li><li><a href="#night">Your night</a></li><li><a href="#specs">Specs</a></li></ul>
+  <a class="btn" href="#order">Pre-order</a>
+</nav>
+
+<main>
+<header class="wrap hero">
+  <div>
+    <h1>The ring that <b>learns how you sleep.</b></h1>
+    <p>Lull tracks your heart rate, temperature and breathing all night, then tells you one thing to change tomorrow. No screen, no buzzing, nothing to charge for a week.</p>
+    <div class="ctas"><a class="btn" href="#order">Pre-order from $189</a><a class="btn glass" href="#night">See a night</a></div>
+  </div>
+  <div class="orbwrap" aria-hidden="true">
+    <div class="orb" id="orb"></div>
+    <div class="ring"></div>
+    <div class="chip c1"><b>7h 42m</b>asleep last night</div>
+    <div class="chip c2"><b>58 bpm</b>resting heart rate</div>
+  </div>
+</header>
+
+<section class="wrap" id="score">
+  <div class="score">
+    <div class="dial">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9AA6FF"/><stop offset="1" stop-color="#C8F0EC"/></linearGradient></defs><circle cx="60" cy="60" r="52" fill="none" stroke="#fff" stroke-width="10"/><circle id="arc" cx="60" cy="60" r="52" fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+      <div class="n"><div><b id="sc">0</b><span>sleep score</span></div></div>
+    </div>
+    <div>
+      <h2>One number in the morning. <b>One tip for tonight.</b></h2>
+      <p style="max-width:48ch;opacity:.8">Your score combines how long you slept, how deep it was and how calm your body stayed. Lull compares it with your own last 30 nights, not with strangers.</p>
+      <ul class="factors">
+        <li><b>1h 54m</b><span>deep sleep</span></li>
+        <li><b>94%</b><span>efficiency</span></li>
+        <li><b>−0.3°</b><span>skin temperature</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="night">
+  <div class="night">
+    <header><h2>Last night, minute by minute</h2>
+      <div class="legend"><span><i style="background:#FFD9E4"></i>Awake</span><span><i style="background:#C8F0EC"></i>Light</span><span><i style="background:#9AA6FF"></i>REM</span><span><i style="background:#1C1D33"></i>Deep</span></div>
+    </header>
+    <div class="chart" id="chart"><div class="tip" id="tip"></div></div>
+    <div class="hours"><span>23:10</span><span>01:00</span><span>03:00</span><span>05:00</span><span>06:52</span></div>
+  </div>
+</section>
+
+<section class="wrap" id="specs">
+  <div class="specs">
+    <div><h2>Lighter than a wedding band.</h2><p style="margin-top:16px;opacity:.8;max-width:38ch">Titanium shell, a smooth ceramic inside and sensors that sit flat against your finger. Waterproof to 100 m.</p></div>
+    <dl>
+      <div><dt>Weight</dt><dd>3.8 g</dd></div><div><dt>Battery</dt><dd>7 days</dd></div>
+      <div><dt>Sensors</dt><dd>PPG, temp, motion</dd></div><div><dt>Charge</dt><dd>0–100% in 70 min</dd></div>
+      <div><dt>Sizes</dt><dd>6 to 13</dd></div><div><dt>Subscription</dt><dd>None</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="wrap" id="order">
+  <div class="order">
+    <div>
+      <h2>Pre-order your Lull</h2>
+      <p style="opacity:.75">Ships in March. Free sizing kit first, so you get the right fit.</p>
+      <div class="price" id="price">$189 <small>one payment, no subscription</small></div>
+      <p style="font-size:14px;opacity:.7">Finish</p>
+      <div class="swatches" id="sw">
+        <button aria-pressed="true" aria-label="Moon silver" data-n="Moon silver" data-p="189" data-c="#9AA6FF,#D9C9FF,#C8F0EC" style="background:linear-gradient(135deg,#f4f5fa,#b9bed3)"></button>
+        <button aria-pressed="false" aria-label="Dusk rose" data-n="Dusk rose" data-p="199" data-c="#FFB3C7,#FFD9E4,#D9C9FF" style="background:linear-gradient(135deg,#ffe3ea,#d9a0ae)"></button>
+        <button aria-pressed="false" aria-label="Night black" data-n="Night black" data-p="209" data-c="#6F7BD9,#3B3D66,#9AA6FF" style="background:linear-gradient(135deg,#55576e,#16172a)"></button>
+      </div>
+      <a class="btn" href="#">Pre-order now</a>
+    </div>
+    <div class="preview" aria-hidden="true"><div class="orb" id="orb2" style="inset:14%"></div><div class="ring"></div><div class="finish" id="fn">Moon silver</div></div>
+  </div>
+</section>
+</main>
+
+<footer><span>Lull Labs, Copenhagen</span><span>Privacy · Science · Support</span></footer>
+
+<script>
+// sleep score counts up when visible
+const arc=document.getElementById('arc'),sc=document.getElementById('sc'),SCORE=86;
+new IntersectionObserver((es,o)=>{if(!es[0].isIntersecting)return;o.disconnect();arc.style.strokeDashoffset=326.7*(1-SCORE/100);let n=0;const t=setInterval(()=>{sc.textContent=n;if(++n>SCORE)clearInterval(t)},18)}).observe(arc);
+// hypnogram
+const ST=[["Awake",0,"#FFD9E4"],["Light",1,"#C8F0EC"],["REM",2,"#9AA6FF"],["Deep",3,"#1C1D33"]];
+const seq=[0,1,1,3,3,1,2,1,3,1,2,2,1,0,1,3,1,2,2,1,1,2,1,0,1,2,2,1,0];
+const W=1000,H=220,step=W/seq.length,start=23*60+10;
+let r='';seq.forEach((s,i)=>{const y=s*48+16;r+=`<rect x="${i*step+1}" y="${y}" width="${step-2}" height="${H-y}" rx="8" fill="${ST[s][2]}" data-i="${i}" opacity=".9"/>`});
+document.getElementById('chart').insertAdjacentHTML('afterbegin',`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sleep stages chart">${r}</svg>`);
+const tip=document.getElementById('tip'),chart=document.getElementById('chart');
+chart.addEventListener('pointermove',e=>{const el=e.target.closest('rect');if(!el){tip.style.opacity=0;return}const i=+el.dataset.i,m=(start+i*16)%1440,cb=chart.getBoundingClientRect();
+ tip.textContent=`${String(m/60|0).padStart(2,'0')}:${String(m%60).padStart(2,'0')} · ${ST[seq[i]][0]}`;tip.style.left=(e.clientX-cb.left)+'px';tip.style.opacity=1});
+chart.addEventListener('pointerleave',()=>tip.style.opacity=0);
+// finish picker recolours orbs
+document.getElementById('sw').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#sw button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+ const [a,bb,c]=b.dataset.c.split(',');const R=document.documentElement.style;R.setProperty('--a',a);R.setProperty('--b',bb);R.setProperty('--c',c);
+ document.getElementById('fn').textContent=b.dataset.n;document.getElementById('price').firstChild.textContent='$'+b.dataset.p+' '};
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Assembly — a conference for people who build things</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9E1CF; --ink:#161412; --red:#D2231E; --steel:#3E5468; --line:rgba(22,20,18,.85);
+  --display:"Big Shoulders Display",Impact,sans-serif; --body:"Instrument Sans",system-ui,sans-serif;
+  --pad:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--body);overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{padding:0 var(--pad);max-width:1440px;margin:0 auto}
+
+/* nav */
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px var(--pad);border-bottom:3px solid var(--ink);position:relative;z-index:5}
+.logo{font:900 28px/1 var(--display);letter-spacing:.02em;text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo i{width:22px;height:22px;background:var(--red);clip-path:polygon(0 100%,100% 0,100% 100%)}
+nav ul{display:flex;gap:28px;list-style:none;font-weight:600}
+nav ul a{text-decoration:none}
+nav ul a:hover{color:var(--red)}
+.btn{display:inline-block;font:800 20px/1 var(--display);letter-spacing:.04em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:14px 22px;text-decoration:none;border:0;cursor:pointer}
+.btn:hover{background:var(--red)}
+.btn.red{background:var(--red)} .btn.red:hover{background:var(--ink)}
+
+/* hero */
+.hero{position:relative;min-height:min(92vh,860px);overflow:hidden;border-bottom:3px solid var(--ink)}
+.hero .wedge{position:absolute;inset:0;background:var(--red);clip-path:polygon(58% 0,100% 0,100% 100%,30% 100%)}
+.hero .disc{position:absolute;width:clamp(180px,26vw,380px);aspect-ratio:1;border-radius:50%;background:var(--ink);right:8%;top:12%}
+.hero .bar{position:absolute;height:clamp(14px,1.6vw,22px);background:var(--ink);width:70%;left:-5%;top:58%;transform:rotate(-14deg);transform-origin:left}
+.word{position:absolute;left:var(--pad);top:14%;font:900 clamp(96px,19vw,300px)/.82 var(--display);text-transform:uppercase;transform:rotate(-14deg);transform-origin:left bottom;letter-spacing:-.01em;will-change:transform}
+.word span{display:block}
+.word span:last-child{color:var(--paper);-webkit-text-stroke:3px var(--ink);margin-left:.6em}
+.hero-copy{position:absolute;left:var(--pad);bottom:var(--pad);max-width:440px;background:var(--paper);border:3px solid var(--ink);padding:22px}
+.hero-copy p{font-size:clamp(18px,1.6vw,22px);line-height:1.35;margin-bottom:18px}
+.meta{position:absolute;right:var(--pad);bottom:var(--pad);color:var(--paper);text-align:right;font:800 clamp(26px,3.4vw,48px)/1 var(--display);text-transform:uppercase}
+.meta small{display:block;font:600 16px/1.4 var(--body);text-transform:none;margin-top:8px}
+
+/* section heads */
+section{padding:clamp(56px,8vw,110px) 0;border-bottom:3px solid var(--ink)}
+.head{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:end;margin-bottom:44px}
+.head h2{font:900 clamp(56px,8vw,128px)/.85 var(--display);text-transform:uppercase}
+.head p{max-width:46ch;justify-self:end;font-size:18px}
+.tilt{display:inline-block;transform:rotate(-4deg);background:var(--ink);color:var(--paper);padding:0 .12em}
+
+/* manifesto */
+.manifesto{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,5vw,80px);align-items:start}
+.manifesto blockquote{font:800 clamp(34px,4.2vw,64px)/.95 var(--display);text-transform:uppercase}
+.manifesto blockquote em{font-style:normal;color:var(--red)}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);border:3px solid var(--ink)}
+.facts div{padding:22px;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.facts div:nth-child(2n){border-right:0} .facts div:nth-last-child(-n+2){border-bottom:0}
+.facts b{display:block;font:900 clamp(48px,5vw,76px)/1 var(--display)}
+.facts div:first-child{background:var(--red);color:var(--paper)}
+
+/* programme */
+.tabs{display:flex;border:3px solid var(--ink);width:max-content;margin-bottom:28px}
+.tabs button{font:800 22px/1 var(--display);text-transform:uppercase;padding:14px 26px;background:none;border:0;cursor:pointer;color:var(--ink)}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--paper)}
+.slots{list-style:none}
+.slot{display:grid;grid-template-columns:110px 1fr 200px;gap:20px;padding:20px 0;border-top:2px solid var(--line);align-items:baseline}
+.slot time{font:800 26px/1 var(--display)}
+.slot h3{font:600 22px/1.25 var(--body)}
+.slot p{color:var(--steel);margin-top:4px}
+.slot .tag{justify-self:end;font:700 14px/1 var(--body);border:2px solid var(--ink);padding:6px 10px;border-radius:99px}
+.slot.key .tag{background:var(--red);color:var(--paper);border-color:var(--red)}
+
+/* speakers */
+.speakers{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:3px solid var(--ink)}
+.sp{border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:18px;position:relative}
+.sp:nth-child(4n){border-right:0} .sp:nth-last-child(-n+4){border-bottom:0}
+.portrait{aspect-ratio:1;position:relative;overflow:hidden;margin-bottom:14px;background:var(--steel)}
+.portrait::before{content:"";position:absolute;width:62%;aspect-ratio:1;border-radius:50%;background:var(--paper);left:19%;top:16%}
+.portrait::after{content:"";position:absolute;inset:auto -10% -30% -10%;height:55%;background:var(--ink);clip-path:polygon(0 30%,100% 0,100% 100%,0 100%)}
+.portrait b{position:absolute;z-index:2;left:10px;top:8px;font:900 46px/1 var(--display);color:var(--paper)}
+.sp:nth-child(3n+1) .portrait{background:var(--red)} .sp:nth-child(3n+2) .portrait::after{background:var(--red)}
+.sp h3{font:800 26px/1 var(--display);text-transform:uppercase}
+.sp p{font-size:15px;color:var(--steel)}
+.sp:hover .portrait{transform:rotate(-3deg)} .portrait{transition:transform .25s}
+
+/* tickets */
+.tickets{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tk{border:3px solid var(--ink);padding:26px;display:flex;flex-direction:column;gap:14px;position:relative;background:var(--paper)}
+.tk h3{font:900 40px/1 var(--display);text-transform:uppercase}
+.tk .price{font:900 84px/.9 var(--display)}
+.tk .price small{font:600 16px var(--body)}
+.tk ul{list-style:none;flex:1}
+.tk li{padding:8px 0;border-top:2px solid var(--line)}
+.tk.main{background:var(--ink);color:var(--paper);transform:rotate(-2deg)}
+.tk.main li{border-color:rgba(233,225,207,.4)}
+.left{font:700 15px var(--body)}
+.meter{height:12px;border:2px solid currentColor;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--red);transition:width 1s}
+
+/* venue */
+.venue{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.map{aspect-ratio:4/3;border:3px solid var(--ink);position:relative;overflow:hidden;background:
+ repeating-linear-gradient(-14deg,transparent 0 46px,rgba(22,20,18,.18) 46px 48px),repeating-linear-gradient(76deg,transparent 0 70px,rgba(22,20,18,.18) 70px 72px)}
+.map .river{position:absolute;left:-10%;right:-10%;top:58%;height:18%;background:var(--steel);transform:rotate(-14deg)}
+.map .pin{position:absolute;left:46%;top:32%;width:48px;height:48px;background:var(--red);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid var(--ink)}
+.venue h3{font:900 clamp(40px,5vw,72px)/.9 var(--display);text-transform:uppercase;margin-bottom:16px}
+.venue dl{display:grid;grid-template-columns:120px 1fr;gap:10px 18px;margin:20px 0 28px}
+.venue dt{font-weight:600}
+
+footer{padding:40px 0 24px;overflow:hidden}
+.big{font:900 clamp(80px,22vw,360px)/.8 var(--display);text-transform:uppercase;white-space:nowrap;letter-spacing:-.01em}
+.big span{color:var(--red)}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:24px;font-size:15px}
+
+@media (max-width:900px){
+  nav ul{display:none}
+  .head,.manifesto,.venue{grid-template-columns:1fr}
+  .head p{justify-self:start}
+  .speakers{grid-template-columns:repeat(2,1fr)}
+  .sp:nth-child(n){border-right:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+  .sp:nth-child(2n){border-right:0} .sp:nth-last-child(-n+2){border-bottom:0}
+  .tickets{grid-template-columns:1fr} .tk.main{transform:none}
+  .slot{grid-template-columns:80px 1fr} .slot .tag{grid-column:2;justify-self:start}
+  .hero{min-height:760px} .hero .wedge{clip-path:polygon(70% 0,100% 0,100% 100%,40% 100%)}
+  .meta{top:var(--pad);bottom:auto}
+}
+@media (max-width:520px){.speakers{grid-template-columns:1fr}.sp:nth-child(n){border-right:0;border-bottom:3px solid var(--ink)}.sp:last-child{border-bottom:0}.hero-copy{right:var(--pad)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#"><i></i>ASSEMBLY/27</a>
+  <ul><li><a href="#programme">Programme</a></li><li><a href="#speakers">Speakers</a></li><li><a href="#venue">Venue</a></li></ul>
+  <a class="btn red" href="#tickets">Get a ticket</a>
+</nav>
+
+<header class="hero">
+  <div class="wedge"></div><div class="disc"></div><div class="bar"></div>
+  <h1 class="word" id="word"><span>Assem</span><span>bly</span></h1>
+  <div class="hero-copy">
+    <p>A two-day conference for people who build physical things: hardware, furniture, tools, machines and the factories that make them.</p>
+    <a class="btn" href="#tickets">Get a ticket</a>
+  </div>
+  <div class="meta">14–15 May 2027<small>Fenix Hall, Rotterdam · 600 seats</small></div>
+</header>
+
+<main>
+<section class="wrap">
+  <div class="manifesto">
+    <blockquote>Software eats the world. <em>Someone still has to build the plate.</em></blockquote>
+    <div>
+      <p style="font-size:19px;margin-bottom:26px">Assembly brings together engineers, designers and makers who ship real objects. No product launches on stage, no sponsor keynotes. Just people showing how they build, what broke on the way, and what they would do differently.</p>
+      <div class="facts">
+        <div><b>32</b>talks</div><div><b>12</b>workshops</div><div><b>2</b>days</div><div><b>600</b>builders</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="programme">
+  <div class="head"><h2>Pro<span class="tilt">gramme</span></h2><p>Mornings are talks in the main hall. Afternoons are hands-on workshops on the factory floor.</p></div>
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-day="0">Day 1 · Fri</button>
+    <button role="tab" aria-selected="false" data-day="1">Day 2 · Sat</button>
+  </div>
+  <ul class="slots" id="slots"></ul>
+</section>
+
+<section class="wrap" id="speakers">
+  <div class="head"><h2>Speakers</h2><p>Hover a portrait to see it lean in. Full bios are announced every Monday until the doors open.</p></div>
+  <div class="speakers" id="spk"></div>
+</section>
+
+<section class="wrap" id="tickets">
+  <div class="head"><h2>Tic<span class="tilt">kets</span></h2><p>Every ticket includes both days, lunch and a seat in one workshop. Prices go up when each batch sells out.</p></div>
+  <div class="tickets">
+    <div class="tk"><h3>Student</h3><div class="price">€90<small> / 2 days</small></div><ul><li>All talks</li><li>One workshop</li><li>Lunch both days</li></ul><div class="left" data-left="38" data-of="80">38 of 80 left<div class="meter"><i></i></div></div><a class="btn" href="#">Choose Student</a></div>
+    <div class="tk main"><h3>Builder</h3><div class="price">€240<small> / 2 days</small></div><ul><li>All talks</li><li>Two workshops</li><li>Lunch and the Friday party</li><li>Recordings after the event</li></ul><div class="left" data-left="112" data-of="400">112 of 400 left<div class="meter"><i></i></div></div><a class="btn red" href="#">Choose Builder</a></div>
+    <div class="tk"><h3>Team of 5</h3><div class="price">€990<small> / 5 people</small></div><ul><li>Five Builder tickets</li><li>Reserved table</li><li>One invoice</li></ul><div class="left" data-left="9" data-of="24">9 of 24 left<div class="meter"><i></i></div></div><a class="btn" href="#">Choose Team</a></div>
+  </div>
+</section>
+
+<section class="wrap" id="venue">
+  <div class="venue">
+    <div class="map" aria-hidden="true"><div class="river"></div><div class="pin"></div></div>
+    <div>
+      <h3>Fenix Hall, Rotterdam</h3>
+      <p>A 1923 warehouse on the Maas, rebuilt as a hall for 600 people with a working workshop floor next door.</p>
+      <dl><dt>Address</dt><dd>Veerlaan 19D, 3072 AN Rotterdam</dd><dt>Train</dt><dd>Rotterdam Centraal, then tram 23 to Rijnhaven</dd><dt>Doors</dt><dd>08:30 both days</dd></dl>
+      <a class="btn" href="#">Open in maps</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="big">Build<span>/</span>27</div>
+  <div class="foot"><span>Assembly Conference · hello@assembly.example</span><span>Code of conduct · Press · Volunteer</span></div>
+</footer>
+
+<script>
+const DAYS=[
+ [["09:30","Opening: what we built this year","Mira Okafor, Assembly","",0],["10:00","Designing a bicycle that ships flat","Jonas Lindqvist, Velo Works","Keynote",1],["11:00","Tolerances are a design language","Aiko Tanaka, Studio Mon","Talk",0],["12:30","Lunch on the factory floor","","Break",0],["14:00","Workshop: sheet metal without a factory","Room B","Workshop",0],["16:30","Panel: small-batch manufacturing in Europe","Four founders","Panel",0]],
+ [["09:30","Repair as a product feature","Lena Vogel, Fixwell","Keynote",1],["10:30","From prototype to 1,000 units in nine months","Samir Haddad, Pocket Lab","Talk",0],["11:30","What the injection mould taught us","Ruth Mbeki, Kettle Co.","Talk",0],["12:30","Lunch","","Break",0],["14:00","Workshop: designing for disassembly","Room A","Workshop",0],["17:00","Closing and the long table dinner","","Social",0]]
+];
+const slots=document.getElementById('slots');
+function render(d){slots.innerHTML=DAYS[d].map(s=>`<li class="slot${s[4]?' key':''}"><time>${s[0]}</time><div><h3>${s[1]}</h3>${s[2]?`<p>${s[2]}</p>`:''}</div>${s[3]?`<span class="tag">${s[3]}</span>`:''}</li>`).join('')}
+document.querySelectorAll('[role=tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[role=tab]').forEach(x=>x.setAttribute('aria-selected',x===b));render(+b.dataset.day)});
+render(0);
+const SP=[["Mira Okafor","Founder, Assembly"],["Jonas Lindqvist","Velo Works"],["Aiko Tanaka","Studio Mon"],["Lena Vogel","Fixwell"],["Samir Haddad","Pocket Lab"],["Ruth Mbeki","Kettle Co."],["Tomás Ruiz","Forma Tools"],["Ines Duarte","Open Loom"]];
+document.getElementById('spk').innerHTML=SP.map(s=>`<article class="sp"><div class="portrait"><b>${s[0].split(' ').map(w=>w[0]).join('')}</b></div><h3>${s[0]}</h3><p>${s[1]}</p></article>`).join('');
+// ticket meters fill when visible
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const l=e.target;l.querySelector('i').style.width=(100-l.dataset.left/l.dataset.of*100)+'%';io.unobserve(l)}}));
+document.querySelectorAll('.left').forEach(l=>{l.querySelector('i').style.width='0';io.observe(l)});
+// hero word straightens slightly as you scroll
+const w=document.getElementById('word');
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches) addEventListener('scroll',()=>{const p=Math.min(scrollY/600,1);w.style.transform=`rotate(${-14+8*p}deg) translateX(${p*-40}px)`},{passive:true});
+</script>
+</body>
+</html>
